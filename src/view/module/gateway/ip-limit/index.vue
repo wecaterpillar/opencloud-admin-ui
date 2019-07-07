@@ -61,8 +61,8 @@
             <Option value="1" label="允许-白名单"></Option>
           </Select>
         </FormItem>
-        <FormItem label="IP地址" prop="ipAddress">
-          <Input v-model="formItem.ipAddress" type="textarea" placeholder="请输入内容"></Input> 多个用;隔开
+        <FormItem label="IP地址/域名" prop="ipAddress">
+          <Input v-model="formItem.ipAddress" type="textarea" placeholder="192.168.0.1;192.168.0.2;baidu.com;weixin.com"></Input> 同时支持Ip和域名,多个用分号";"隔开。示例：192.168.0.1;baidu.com;weixin.com
         </FormItem>
       </Form>
       <Form ref="form2" v-show="current=='form2'" :model="formItem" :rules="formItemRules" :label-width="100">
@@ -160,7 +160,7 @@
           },
 
           {
-            title: 'IP地址',
+            title: 'IP地址/域名',
             key: 'ipAddress',
             width: 550
           },
@@ -187,7 +187,7 @@
           step = this.forms[0]
         }
         if (step === this.forms[0]) {
-          this.modalTitle = data ? '编辑IP策略 - ' + this.formItem.policyName : '添加IP策略'
+          this.modalTitle = data ? '编辑来源限制策略 - ' + this.formItem.policyName : '添加来源限制'
           this.modalVisible = true
         }
         if (step === this.forms[1]) {

@@ -121,7 +121,7 @@
           path: '',
           serviceId: '',
           url: '',
-          stripPrefix: 1,
+          stripPrefix: 0,
           retryable: 0,
           status: 1,
           routeName: ''
