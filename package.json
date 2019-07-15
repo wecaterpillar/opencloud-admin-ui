@@ -1,8 +1,9 @@
 {
-  "name": "open-admin",
+  "name": "openea-admin-ui",
   "version": "2.1.0",
-  "author": "Liuyadu<515608851@qq.com>",
-  "private": false,
+  "description": "based on open-admin-ui(author is Liuyadu<515608851@qq.com>)",
+  "author": "",
+  "private": true,
   "scripts": {
     "dev": "vue-cli-service serve --open",
     "build": "vue-cli-service build",
