@@ -23,7 +23,7 @@ export const getMenus = () => {
  * @param priority
  * @param menuDesc
  */
-export const addMenu = ({menuCode, menuName, icon, scheme, path, target, status, parentId, priority, menuDesc}) => {
+export const addMenu = ({menuCode, menuName, icon, scheme, path, target, status, parentId, priority, menuDesc, serviceId}) => {
   const data = {
     menuCode: menuCode,
     menuName: menuName,
@@ -34,7 +34,8 @@ export const addMenu = ({menuCode, menuName, icon, scheme, path, target, status,
     status: status,
     parentId: parentId,
     priority: priority,
-    menuDesc: menuName
+    menuDesc: menuName,
+    serviceId: serviceId
   }
   return request({
     url: 'base/menu/add',
@@ -57,7 +58,7 @@ export const addMenu = ({menuCode, menuName, icon, scheme, path, target, status,
  * @param priority
  * @param menuDesc
  */
-export const updateMenu = ({menuId, menuCode, menuName, icon, scheme, path, target, status, parentId, priority, menuDesc}) => {
+export const updateMenu = ({menuId, menuCode, menuName, icon, scheme, path, target, status, parentId, priority, menuDesc, serviceId}) => {
   const data = {
     menuId: menuId,
     menuCode: menuCode,
@@ -69,7 +70,8 @@ export const updateMenu = ({menuId, menuCode, menuName, icon, scheme, path, targ
     status: status,
     parentId: parentId,
     priority: priority,
-    menuDesc: menuDesc
+    menuDesc: menuDesc,
+    serviceId: serviceId
   }
   return request({
     url: 'base/menu/update',

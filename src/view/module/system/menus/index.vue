@@ -36,6 +36,14 @@
             </Modal>
           </div>
           <Form ref="menuForm" :model="formItem" :rules="formItemRules" :label-width="80">
+            <FormItem label="前端应用"  prop="serviceId">
+              <Select v-model="formItem.serviceId" filterable clearable>
+                <Option :title="item.serviceName" v-for="item in selectServiceList" @click.native="handleOnSelectService(item)"
+                        :value="item.serviceId" :label="item.serviceName">
+                  <span>{{ item.serviceName }}</span>
+                </Option>
+              </Select>
+            </FormItem>
             <FormItem label="上级菜单" prop="parentId">
               <treeselect
                           v-model="formItem.parentId"
@@ -139,6 +147,11 @@
           menuId: 0,
           menuName: '无'
         }],
+        selectServiceList: [
+          { serviceId: "openea-admin-ui",serviceName: "openea-admin-ui"},
+          { serviceId: "open-cloud-base-server",serviceName: "open-cloud-base-server"},
+          { serviceId: "opencloud-base-provider",serviceName: "opencloud-base-provider"}
+        ],
         formItemRules: {
           parentId: [
             {required: true, message: '上级菜单', trigger: 'blur'}
@@ -151,6 +164,7 @@
           ]
         },
         formItem: {
+          serviceId: '',
           menuId: '',
           menuCode: '',
           menuName: '',
@@ -205,6 +219,7 @@
       },
       handleReset () {
         const newData = {
+          serviceId: '',
           menuId: '',
           menuCode: '',
           menuName: '',
@@ -269,6 +284,9 @@
           this.data = listConvertTree(res.data, opt)
           this.setSelectTree(this.data)
         })
+      },
+      handleOnSelectService (data) {
+        this.formItem.serviceId = data.serviceId
       }
     },
     mounted: function () {

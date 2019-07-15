@@ -25,6 +25,9 @@
       </div>
       <div>
         <Form ref="form1" v-show="current=='form1'" :model="formItem" :rules="formItemRules" :label-width="100">
+          <FormItem label="前端应用">
+            <Input disabled v-model="value.serviceId"></Input>
+          </FormItem>
           <FormItem label="上级菜单">
             <Input disabled v-model="value.menuName"></Input>
           </FormItem>
