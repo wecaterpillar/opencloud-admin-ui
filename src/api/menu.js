@@ -94,3 +94,9 @@ export const removeMenu = (menuId) => {
   })
 }
 
+export const getAllServicesInMenu = () => {
+  return request({
+    url: 'base/menu/serviceList',
+    method: 'get'
+  })
+}

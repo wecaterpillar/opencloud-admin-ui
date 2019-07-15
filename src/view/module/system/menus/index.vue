@@ -38,7 +38,7 @@
           <Form ref="menuForm" :model="formItem" :rules="formItemRules" :label-width="80">
             <FormItem label="前端应用"  prop="serviceId">
               <Select v-model="formItem.serviceId" filterable clearable>
-                <Option :title="item.serviceName" v-for="item in selectServiceList" @click.native="handleOnSelectService(item)"
+                <Option :title="item.serviceName" v-for="item in selectServiceList"  @click.native="handleOnSelectService(item)"
                         :value="item.serviceId" :label="item.serviceName">
                   <span>{{ item.serviceName }}</span>
                 </Option>
@@ -118,7 +118,7 @@
 
 <script>
   import {listConvertTree, updateTreeNode} from '@/libs/util'
-  import {getMenus, updateMenu, addMenu, removeMenu} from '@/api/menu'
+  import {getMenus, updateMenu, addMenu, removeMenu, getAllServicesInMenu } from '@/api/menu'
   import MenuAction from './menu-action.vue'
   import icons from './icons'
 
@@ -147,11 +147,7 @@
           menuId: 0,
           menuName: '无'
         }],
-        selectServiceList: [
-          { serviceId: "openea-admin-ui",serviceName: "openea-admin-ui"},
-          { serviceId: "open-cloud-base-server",serviceName: "open-cloud-base-server"},
-          { serviceId: "opencloud-base-provider",serviceName: "opencloud-base-provider"}
-        ],
+        selectServiceList: [],
         formItemRules: {
           parentId: [
             {required: true, message: '上级菜单', trigger: 'blur'}
@@ -286,10 +282,22 @@
         })
       },
       handleOnSelectService (data) {
+        // todo set parentId is 0 when serviceId changed
+        if( data.serviceId !== this.formItem.serviceId ) {
+          this.formItem.parentId = '0'
+        }
         this.formItem.serviceId = data.serviceId
+      },
+      handleLoadServices () {
+        getAllServicesInMenu().then(res => {
+          if (res.code === 0) {
+            this.selectServiceList = res.data
+          }
+        })
       }
     },
     mounted: function () {
+      this.handleLoadServices()
       this.handleSearch()
     }
   }
