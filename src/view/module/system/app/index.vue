@@ -58,10 +58,10 @@
             @on-change="handlePage" @on-page-size-change='handlePageSize'></Page>
     </Card>
 
-    <Drawer width="40"  v-model="drawerVisible" @on-close="handleReset">
-      <div slot="header">
-        {{modalTitle}}
-      </div>
+    <Modal v-model="modalVisible"
+           :title="modalTitle"
+           width="40"
+           @on-cancel="handleReset">
       <div>
         <Tabs :value="current" @on-click="handleTabClick">
           <TabPane label="应用信息" name="form1">
@@ -218,7 +218,7 @@
                 <Alert  show-icon>提示：支持动态授权,无需重新获取令牌或刷新令牌</Alert>
                 <Transfer
                   :data="selectApis"
-                  :list-style="{width: '45%',height: '580px'}"
+                  :list-style="{width: '45%',height: '480px'}"
                   :titles="['选择接口', '已选择接口']"
                   :render-format="transferRender"
                   :target-keys="formItem.authorities"
@@ -234,7 +234,7 @@
           <Button type="primary" @click="handleSubmit" :loading="saving">保存</Button>
         </div>
       </div>
-    </Drawer>
+    </Modal>
   </div>
 </template>
 
@@ -298,7 +298,7 @@
             'url': ''
           }
         ],
-        drawerVisible: false,
+        modalVisible: false,
         modalTitle: '',
         imgName: '',
         visible: false,
@@ -494,7 +494,7 @@
         })
         this.current = this.forms[0]
         this.saving = false
-        this.drawerVisible = false
+        this.modalVisible = false
       },
       handleSubmit () {
         if (this.current === this.forms[0]) {
@@ -677,7 +677,7 @@
               that.formItem.isExpired = res2.data[0].isExpired
             }
           }
-          that.drawerVisible = true
+          that.modalVisible = true
         })
       },
       handleLoadAppClientInfo (clientId) {
@@ -694,7 +694,7 @@
             this.formItem.autoApproveScopes = res.data.autoapprove ? res.data.autoapprove : []
             this.formItem.tokenValidity = this.formItem.accessTokenValidity === -1 ? '0' : '1';
           }
-          this.drawerVisible = true
+          this.modalVisible = true
         })
       },
       transferRender (item) {
@@ -712,7 +712,7 @@
           if (res.code === 0) {
             this.selectUsers = res.data
           }
-          this.drawerVisible = true
+          this.modalVisible = true
         })
       },
       handleView (name) {

@@ -53,10 +53,10 @@
             show-total
             @on-change="handlePage" @on-page-size-change='handlePageSize'></Page>
     </Card>
-    <Drawer width="40"  v-model="drawerVisible" @on-close="handleReset">
-      <div slot="header">
-        {{modalTitle}}
-      </div>
+    <Modal v-model="modalVisible"
+           :title="modalTitle"
+           width="40"
+           @on-cancel="handleReset">
       <div>
         <Tabs @on-click="handleTabClick" :value="current">
           <TabPane label="用户信息" name="form1">
@@ -119,7 +119,7 @@
                 <Alert type="warning" show-icon>请注意：用户可以分配除所属角色下以外的菜单功能！ 可以判断 owner='role' 禁止勾选,这里的插件有问题没法做到！</Alert>
                 <tree-table
                   ref="tree"
-                  style="max-height:500px;overflow: auto"
+                  style="max-height:450px;overflow: auto"
                   expand-key="menuName"
                   :expand-type="false"
                   :is-fold="false"
@@ -157,7 +157,7 @@
           <Button type="primary" @click="handleSubmit" :loading="saving">保存</Button>
         </div>
       </div>
-    </Drawer>
+    </Modal>
   </div>
 </template>
 
@@ -222,7 +222,7 @@
       return {
         loading: false,
         saving: false,
-        drawerVisible: false,
+        modalVisible: false,
         modalTitle: '',
         current: 'form1',
         forms: [
@@ -358,7 +358,7 @@
         }
         if (this.current === this.forms[0]) {
           this.modalTitle = data ? '编辑用户 - ' + data.userName : '添加用户'
-          this.drawerVisible = true
+          this.modalVisible = true
         }
         if (this.current === this.forms[1]) {
           this.modalTitle = data ? '分配角色 - ' + data.userName : '分配角色'
@@ -370,7 +370,7 @@
         }
         if (this.current === this.forms[3]) {
           this.modalTitle = data ? '修改密码 - ' + data.userName : '修改密码'
-          this.drawerVisible = true
+          this.modalVisible = true
         }
         this.formItem.status = this.formItem.status + ''
       },
@@ -405,7 +405,7 @@
         this.current = this.forms[0]
         this.formItem.grantMenus = []
         this.formItem.grantActions = []
-        this.drawerVisible = false
+        this.modalVisible = false
         this.saving = false
       },
       handleSubmit() {
@@ -555,7 +555,7 @@
             })
             that.selectMenus = listConvertTree(res1.data, opt)
           }
-          that.drawerVisible = true
+          that.modalVisible = true
         })
       },
       handleLoadRoles(userId) {
@@ -578,7 +578,7 @@
             })
             that.formItem.grantRoles = result
           }
-          that.drawerVisible = true
+          that.modalVisible = true
         })
       },
       handlePage(current) {

@@ -16,23 +16,38 @@
  ```html
  <Button v-show="hasAuthority('systemUserCreate')" type="primary">
  ```
- 
-## Install
+
+#### 初始化安装
 ```bush
 // install dependencies
 npm install
 ```
-## Run
-### Development
+#### 修改配置(/src/config/index.js)
+```
+  /**
+   *  发布目录
+   */
+ publicPath: {
+    dev: '/',      //  本地环境发布目录
+    pro: '/'  //  生产环境发布目录
+  },
+  /**
+   *  api请求基础路径
+   */
+  apiUrl: {
+    dev: 'http://localhost:8888', //  本地环境接口请求地址
+    pro: 'http://api.openc.top'  //  生产环境接口请求地址
+  },
+```
+#### 本地运行
 ```bush
 npm run dev
 ```
-### Production(Build)
+#### 打包部署
 ```bush
 npm run build
 ```
-
-### 功能预览
+#### 功能预览
 
 <table>
 	<tr>

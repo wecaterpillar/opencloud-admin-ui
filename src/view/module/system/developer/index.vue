@@ -53,10 +53,10 @@
             show-total
             @on-change="handlePage" @on-page-size-change='handlePageSize'></Page>
     </Card>
-    <Drawer width="40"  v-model="drawerVisible" @on-close="handleReset">
-      <div slot="header">
-        {{modalTitle}}
-      </div>
+    <Modal v-model="modalVisible"
+           :title="modalTitle"
+           width="40"
+           @on-cancel="handleReset">
       <div>
         <Tabs @on-click="handleTabClick" :value="current">
           <TabPane label="开发者信息" name="form1">
@@ -116,7 +116,7 @@
           <Button type="primary" @click="handleSubmit" :loading="saving">保存</Button>
         </div>
       </div>
-    </Drawer>
+    </Modal>
   </div>
 </template>
 
@@ -174,7 +174,7 @@
       return {
         loading: false,
         saving: false,
-        drawerVisible: false,
+        modalVisible: false,
         modalTitle: '',
         current: 'form1',
         forms: [
@@ -295,11 +295,11 @@
         }
         if (this.current === this.forms[0]) {
           this.modalTitle = data ? '编辑开发者 - ' + data.userName : '添加开发者'
-          this.drawerVisible = true
+          this.modalVisible = true
         }
         if (this.current === this.forms[1]) {
           this.modalTitle = data ? '修改密码 - ' + data.userName : '修改密码'
-          this.drawerVisible = true
+          this.modalVisible = true
         }
         this.formItem.status = this.formItem.status + ''
       },
@@ -334,7 +334,7 @@
         this.current = this.forms[0]
         this.formItem.grantMenus = []
         this.formItem.grantActions = []
-        this.drawerVisible = false
+        this.modalVisible = false
         this.saving = false
       },
       handleSubmit() {

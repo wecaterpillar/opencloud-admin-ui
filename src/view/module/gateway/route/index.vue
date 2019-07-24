@@ -37,10 +37,10 @@
             show-total
             @on-change="handlePage" @on-page-size-change='handlePageSize'></Page>
     </Card>
-    <Drawer width="30"  v-model="drawerVisible" @on-close="handleReset">
-      <div slot="header">
-        {{modalTitle}}
-      </div>
+    <Modal v-model="modalVisible"
+           :title="modalTitle"
+           width="40"
+           @on-cancel="handleReset">
       <div>
         <Form ref="routeForm" :model="formItem" :rules="formItemRules" :label-width="100">
           <FormItem label="路由名称" prop="routeDesc">
@@ -90,7 +90,7 @@
           <Button type="primary" @click="handleSubmit" :loading="saving">保存</Button>
         </div>
       </div>
-    </Drawer>
+    </Modal>
   </div>
 </template>
 
@@ -104,7 +104,7 @@
       return {
         loading: false,
         saving: false,
-        drawerVisible: false,
+        modalVisible: false,
         modalTitle: '',
         pageInfo: {
           total: 0,
@@ -194,7 +194,7 @@
         this.formItem.url  =  this.formItem.service ? '':this.formItem.url
         this.formItem.service  =  this.formItem.url ? '':this.formItem.service
         this.selectType = this.formItem.url ?'url':'service'
-        this.drawerVisible = true
+        this.modalVisible = true
       },
       handleReset () {
         const newData = {
@@ -211,7 +211,7 @@
         this.formItem = newData
         //重置验证
         this.$refs['routeForm'].resetFields()
-        this.drawerVisible = false
+        this.modalVisible = false
         this.saving = false
       },
       handleSubmit () {

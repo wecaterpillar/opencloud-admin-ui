@@ -46,10 +46,10 @@
             @on-change="handlePage" @on-page-size-change='handlePageSize'></Page>
     </Card>
 
-    <Drawer width="40"  v-model="drawerVisible" @on-close="handleReset">
-      <div slot="header">
-        {{modalTitle}}
-      </div>
+    <Modal v-model="modalVisible"
+           :title="modalTitle"
+           width="40"
+           @on-cancel="handleReset">
       <div>
         <Tabs @on-click="handleTabClick" :value="current">
           <TabPane  label="角色信息" name="form1">
@@ -83,7 +83,7 @@
               <FormItem label="功能菜单(选填)" prop="grantMenus">
                 <tree-table
                   ref="tree"
-                  style="max-height:580px;overflow: auto"
+                  style="max-height:480px;overflow: auto"
                   expand-key="menuName"
                   :expand-type="false"
                   :is-fold="false"
@@ -102,18 +102,19 @@
               </FormItem>
             </Form>
           </TabPane>
-          <TabPane :disabled="!formItem.roleId" label="添加成员" name="form3">        <Form v-show="current == 'form3'" ref="form3" :model="formItem" :rules="formItemRules" :label-width="100">
-            <FormItem label="添加成员(选填)" prop="authorities">
-              <Transfer
-                :data="selectUsers"
-                :list-style="{width: '45%',height: '680px'}"
-                :titles="['选择用户', '已选择用户']"
-                :render-format="transferRender"
-                :target-keys="formItem.userIds"
-                @on-change="handleTransferChange"
-                filterable>
-              </Transfer>
-            </FormItem>
+          <TabPane :disabled="!formItem.roleId" label="添加成员" name="form3">
+            <Form v-show="current == 'form3'" ref="form3" :model="formItem" :rules="formItemRules" >
+              <FormItem prop="authorities">
+                <Transfer
+                  :data="selectUsers"
+                  :list-style="{width: '45%',height: '480px'}"
+                  :titles="['选择用户', '已选择用户']"
+                  :render-format="transferRender"
+                  :target-keys="formItem.userIds"
+                  @on-change="handleTransferChange"
+                  filterable>
+                </Transfer>
+              </FormItem>
           </Form>
           </TabPane>
         </Tabs>
@@ -122,7 +123,7 @@
           <Button type="primary" @click="handleSubmit" :loading="saving">保存</Button>
         </div>
       </div>
-    </Drawer>
+    </Modal>
   </div>
 </template>
 
@@ -156,7 +157,7 @@
           height: '500px'
         },
         loading: false,
-        drawerVisible: false,
+        modalVisible: false,
         modalTitle: '',
         saving: false,
         current: 'form1',
@@ -218,6 +219,7 @@
             title: '状态',
             slot: 'status',
             key: 'status',
+            width: 100,
             filters: [
               {
                 label: '禁用',
@@ -238,14 +240,13 @@
             }
           },
           {
-            title: '描述',
-            key: 'roleDesc',
-            width: 450
-          },
-          {
             title: '最后修改时间',
             key: 'updateTime',
             width: 200,
+          },
+          {
+            title: '描述',
+            key: 'roleDesc'
           },
           {
             title: '操作',
@@ -277,7 +278,7 @@
         }
         if ( this.current === this.forms[0]) {
           this.modalTitle = data ? '编辑角色 - ' + data.roleName : '添加用户'
-          this.drawerVisible = true
+          this.modalVisible = true
         }
         if ( this.current === this.forms[1]) {
           this.modalTitle = data ? '分配权限 - ' + data.roleName : '分配权限'
@@ -320,7 +321,7 @@
         this.current = this.forms[0]
         this.formItem.grantMenus = []
         this.formItem.grantActions = []
-        this.drawerVisible = false
+        this.modalVisible = false
         this.saving = false
       },
       handleSubmit () {
@@ -478,7 +479,7 @@
             })
             that.selectMenus = listConvertTree(res1.data, opt)
           }
-          that.drawerVisible = true
+          that.modalVisible = true
         })
       },
       handleLoadRoleUsers (roleId) {
@@ -507,7 +508,7 @@
             })
             that.formItem.userIds = userIds;
           }
-          that.drawerVisible = true
+          that.modalVisible = true
         })
       },
       transferRender (item) {

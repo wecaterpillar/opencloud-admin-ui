@@ -33,10 +33,10 @@
             show-total
             @on-change="handlePage" @on-page-size-change='handlePageSize'></Page>
     </Card>
-    <Drawer width="30"  v-model="drawerVisible" @on-close="handleReset">
-      <div slot="header">
-        {{modalTitle}}
-      </div>
+    <Modal v-model="modalVisible"
+           :title="modalTitle"
+           width="40"
+           @on-cancel="handleReset">
       <div>
         <Form ref="form1" :model="formItem" :rules="formItemRules" :label-width="100">
           <FormItem label="任务名称" prop="jobName">
@@ -64,7 +64,7 @@
           <Button type="primary" @click="handleSubmit" :loading="saving">保存</Button>
         </div>
       </div>
-    </Drawer>
+    </Modal>
   </div>
 </template>
 
@@ -77,7 +77,7 @@
     data () {
       return {
         loading: false,
-        drawerVisible: false,
+        modalVisible: false,
         modalTitle: '',
         saving: false,
         pageInfo: {
@@ -173,7 +173,7 @@
         } else {
           this.modalTitle = '添加任务'
         }
-        this.drawerVisible = true
+        this.modalVisible = true
       },
       handleResetForm (form) {
         this.$refs[form].resetFields()
@@ -197,7 +197,7 @@
         this.formItem = newData
         //重置验证
         this.handleResetForm('form1')
-        this.drawerVisible = false
+        this.modalVisible = false
         this.saving = false
       },
       handleSubmit () {

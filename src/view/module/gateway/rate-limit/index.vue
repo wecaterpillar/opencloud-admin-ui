@@ -25,10 +25,10 @@
             show-total
             @on-change="handlePage" @on-page-size-change='handlePageSize'></Page>
     </Card>
-    <Drawer width="40"  v-model="drawerVisible" @on-close="handleReset">
-      <div slot="header">
-        {{modalTitle}}
-      </div>
+    <Modal v-model="modalVisible"
+           :title="modalTitle"
+           width="40"
+           @on-cancel="handleReset">
       <div>
         <Tabs :value="current" @on-click="handleTabClick">
           <TabPane label="策略信息" name="form1">
@@ -61,7 +61,7 @@
               <FormItem  prop="authorities">
                 <Transfer
                   :data="selectApis"
-                  :list-style="{width: '45%',height: '680px'}"
+                  :list-style="{width: '45%',height: '480px'}"
                   :titles="['选择接口', '已选择接口']"
                   :render-format="transferRender"
                   :target-keys="formItem.apiIds"
@@ -77,7 +77,7 @@
           <Button type="primary" @click="handleSubmit" :loading="saving">保存</Button>
         </div>
       </div>
-    </Drawer>
+    </Modal>
   </div>
 </template>
 
@@ -90,7 +90,7 @@
       return {
         loading: false,
         saving: false,
-        drawerVisible: false,
+        modalVisible: false,
         modalTitle: '',
         pageInfo: {
           total: 0,
@@ -155,7 +155,7 @@
         }
         if ( this.current === this.forms[0]) {
           this.modalTitle = data ? '编辑限流策略 - ' + this.formItem.policyName : '添加限流策略'
-          this.drawerVisible = true
+          this.modalVisible = true
         }
         if ( this.current === this.forms[1]) {
           this.modalTitle = data ? '绑定接口 - ' + this.formItem.policyName : '绑定接口'
@@ -182,7 +182,7 @@
           this.$refs[form].resetFields()
         })
         this.current = this.forms[0]
-        this.drawerVisible = false
+        this.modalVisible = false
         this.saving = false
       },
       handleSubmit () {
@@ -291,7 +291,7 @@
             })
             that.formItem.apiIds = apiIds
           }
-          that.drawerVisible = true
+          that.modalVisible = true
         })
       },
       transferRender (item) {
