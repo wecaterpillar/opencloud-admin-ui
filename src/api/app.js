@@ -5,8 +5,8 @@ import request from '@/libs/request'
  * @param page
  * @param limit
  */
-export const getApps = ({page, limit, appId, appName, appNameEn}) => {
-  const params = {page: page, limit: limit, appId: appId, appName: appName, appNameEn: appNameEn}
+export const getApps = ({ page, limit, appId, appName, appNameEn }) => {
+  const params = { page: page, limit: limit, appId: appId, appName: appName, appNameEn: appNameEn }
   return request({
     url: 'base/app',
     params,
@@ -27,7 +27,7 @@ export const getApps = ({page, limit, appId, appName, appNameEn}) => {
  * @param userId
  * @param userType
  */
-export const addApp = ({appName, appNameEn, appType, appIcon, appOs, appDesc, status, website, developerId}) => {
+export const addApp = ({ appName, appNameEn, appType, appIcon, appOs, appDesc, status, website, developerId }) => {
   const data = {
     appName: appName,
     appNameEn: appNameEn,
@@ -60,7 +60,7 @@ export const addApp = ({appName, appNameEn, appType, appIcon, appOs, appDesc, st
  * @param userId
  * @param userType
  */
-export const updateApp = ({appId, appName, appNameEn, appType, appIcon, appOs, appDesc, status, website, developerId}) => {
+export const updateApp = ({ appId, appName, appNameEn, appType, appIcon, appOs, appDesc, status, website, developerId }) => {
   const data = {
     appId: appId,
     appName: appName,
@@ -90,7 +90,7 @@ export const updateApp = ({appId, appName, appNameEn, appType, appIcon, appOs, a
  * @param refreshTokenValidity
  * @param autoApproveScopes
  */
-export const updateAppClientInfo = ({appId, grantTypes, redirectUrls, scopes, accessTokenValidity, refreshTokenValidity, autoApproveScopes}) => {
+export const updateAppClientInfo = ({ appId, grantTypes, redirectUrls, scopes, accessTokenValidity, refreshTokenValidity, autoApproveScopes }) => {
   const data = {
     appId: appId,
     grantTypes: grantTypes.join(','),
@@ -111,7 +111,7 @@ export const updateAppClientInfo = ({appId, grantTypes, redirectUrls, scopes, ac
  * 删除应用
  * @param appId
  */
-export const removeApp = ({appId}) => {
+export const removeApp = ({ appId }) => {
   const data = {
     appId: appId
   }
@@ -126,7 +126,7 @@ export const removeApp = ({appId}) => {
  * 重置秘钥
  * @param appId
  */
-export const restApp = ({appId}) => {
+export const restApp = ({ appId }) => {
   const data = {
     appId: appId
   }
@@ -141,7 +141,7 @@ export const restApp = ({appId}) => {
  * 获取应用信息
  * @param appId
  */
-export const getAppInfo = ({appId}) => {
+export const getAppInfo = ({ appId }) => {
   return request({
     url: `base/app/${appId}/info`,
     method: 'get'
@@ -152,7 +152,7 @@ export const getAppInfo = ({appId}) => {
  * 获取应用开发信息
  * @param appId
  */
-export const getAppClientInfo = ({clientId}) => {
+export const getAppClientInfo = ({ clientId }) => {
   return request({
     url: `base/app/client/${clientId}/info`,
     method: 'get'

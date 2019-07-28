@@ -17,10 +17,10 @@ const tables = (data) => {
  * 生成并下载
  */
 const execute = (data) => {
-  if(data.includeTables){
+  if (data.includeTables) {
     data.includeTables = data.includeTables.join(',')
   }
-  if(data.tablePrefix){
+  if (data.tablePrefix) {
     data.tablePrefix = data.tablePrefix.join(',')
   }
   return request({

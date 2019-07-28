@@ -11,5 +11,3 @@ export const saveErrorLogger = info => {
     method: 'post'
   })
 }
-
-

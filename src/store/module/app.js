@@ -113,9 +113,9 @@ export default {
         userName
       }
       commit('addError', data)
-      /*saveErrorLogger(info).then(() => {
+      /* saveErrorLogger(info).then(() => {
         commit('addError', data)
-      })*/
+      }) */
     }
   }
 }

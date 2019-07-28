@@ -14,15 +14,15 @@ let dyncRouters = []
 let BASE_URL = ''
 switch (process.env.NODE_ENV) {
   case 'development':
-    BASE_URL = config.publicPath.dev  //这里是本地的请求url
+    BASE_URL = config.publicPath.dev // 这里是本地的请求url
     break
   case 'production':
-    BASE_URL = config.publicPath.pro   //生产环境url
+    BASE_URL = config.publicPath.pro // 生产环境url
     break
 }
 
 const router = new Router({
-  base:BASE_URL,
+  base: BASE_URL,
   routes: routes,
   mode: 'history'
 })
@@ -31,10 +31,10 @@ const LOGIN_PAGE_NAME = 'login'
 const permitList = [LOGIN_PAGE_NAME, 'loginSuccess']
 
 const turnTo = (to, access, next) => {
-  if(!to.name){
+  if (!to.name) {
     // 防止地址栏刷新动态路由跳转到401或404,先跳转到homeName
     router.replace(to)
-  }else if (canTurnTo(to.name, access, routes)) {
+  } else if (canTurnTo(to.name, access, routes)) {
     next()
   } else {
     // 无权限，重定向到401页面

@@ -3,7 +3,8 @@
     <Card shadow>
       <div class="search-con search-con-top">
         <ButtonGroup>
-          <Button :disabled="hasAuthority('jobEdit')?false:true"   class="search-btn" type="primary" @click="handleModal()">
+          <Button :disabled="hasAuthority('jobEdit')?false:true" class="search-btn" type="primary"
+                  @click="handleModal()">
             <span>添加</span>
           </Button>
         </ButtonGroup>
@@ -19,9 +20,9 @@
           <p v-else="">调度时间:{{row.startDate}} ~ {{row.endDate}}</p>
         </template>
         <template slot="action" slot-scope="{ row }">
-          <a  :disabled="hasAuthority('jobEdit')?false:true"  @click="handleModal(row)">编辑</a>&nbsp;
+          <a :disabled="hasAuthority('jobEdit')?false:true" @click="handleModal(row)">编辑</a>&nbsp;
           <Dropdown v-show="hasAuthority('jobEdit')" transfer ref="dropdown" @on-click="handleClick($event,row)">
-            <a  href="javascript:void(0)">
+            <a href="javascript:void(0)">
               <span>更多</span>
               <Icon type="ios-arrow-down"></Icon>
             </a>
@@ -54,20 +55,22 @@
             </Select>
           </FormItem>
           <FormItem v-if="formItem.jobType === 'simple'" label="开始时间" prop="startTime">
-            <DatePicker v-model="formItem.startTime" type="datetime"  placeholder="开始时间" style="width: 100%"></DatePicker>
+            <DatePicker v-model="formItem.startTime" type="datetime" placeholder="开始时间"
+                        style="width: 100%"></DatePicker>
           </FormItem>
           <FormItem v-if="formItem.jobType === 'simple'" label="结束时间" prop="endTime">
-            <DatePicker v-model="formItem.endTime"  type="datetime" placeholder="结束时间" style="width: 100%"></DatePicker>
+            <DatePicker v-model="formItem.endTime" type="datetime" placeholder="结束时间" style="width: 100%"></DatePicker>
           </FormItem>
           <FormItem v-if="formItem.jobType === 'simple'" label="重复执行" prop="repeatCount">
             <InputNumber :min="-1" v-model="formItem.repeatCount"></InputNumber> &nbsp;&nbsp;次
             &nbsp;&nbsp;
+
             <RadioGroup v-model="formItem.repeatCountType" @on-change="repeatCountTypeChange" type="button">
-              <Radio  label="0">不重复执行</Radio>
-              <Radio  label="-1">不限制次数,一直重复执行(直到过期)</Radio>
+              <Radio label="0">不重复执行</Radio>
+              <Radio label="-1">不限制次数,一直重复执行(直到过期)</Radio>
             </RadioGroup>
           </FormItem>
-          <FormItem  v-if="formItem.jobType === 'simple'"  label="重复执行间隔" prop="repeatInterval">
+          <FormItem v-if="formItem.jobType === 'simple'" label="重复执行间隔" prop="repeatInterval">
             <InputNumber :min="1000" v-model="formItem.repeatInterval"></InputNumber>
             <span>&nbsp;&nbsp;毫秒</span>
           </FormItem>
@@ -76,8 +79,10 @@
           </FormItem>
           <FormItem label="远程调度接口" prop="path">
             <Select filterable v-model="formItem.path" @on-change="handleOnSelectChange">
-              <Option v-for="item in selectApis" :value="item.path">{{ item.path }} - {{ item.apiName}} - {{ item.serviceId}}
-            </Option>
+              <Option v-for="item in selectApis" :value="item.path">{{ item.path
+                }} - {{ item.apiName}} - {{ item.serviceId}}
+
+              </Option>
             </Select>
           </FormItem>
           <FormItem label="任务描述">
@@ -131,13 +136,13 @@
             {required: false, type: 'email', message: '邮箱格式不正确', trigger: 'blur'}
           ],
           startTime: [
-            {required: true,  message: '开始时间不能为空'}
+            {required: true, message: '开始时间不能为空'}
           ],
           repeatInterval: [
-            {required: true,  message: '间隔时间不能为空'}
+            {required: true, message: '间隔时间不能为空'}
           ],
           repeatCount: [
-            {required: true,  message: '重试次数不能为空'}
+            {required: true, message: '重试次数不能为空'}
           ],
         },
         formItem: {
@@ -148,9 +153,9 @@
           cron: '',
           startTime: '',
           endTime: '',
-          repeatInterval:10000,
-          repeatCountType:'0',
-          repeatCount:0,
+          repeatInterval: 10000,
+          repeatCountType: '0',
+          repeatCount: 0,
           serviceId: '',
           path: '',
           method: '',
@@ -171,7 +176,7 @@
           {
             title: '任务触发器',
             width: 350,
-            slot:'type'
+            slot: 'type'
           },
           {
             title: '任务执行器',
@@ -209,12 +214,12 @@
         if (data) {
           this.modalTitle = '编辑任务 - ' + data.jobName
           this.formItem = Object.assign({}, this.formItem, data)
-          this.formItem.jobType = this.formItem.jobTrigger === 'org.quartz.impl.triggers.SimpleTriggerImpl' ?'simple':'cron'
+          this.formItem.jobType = this.formItem.jobTrigger === 'org.quartz.impl.triggers.SimpleTriggerImpl' ? 'simple' : 'cron'
           this.formItem.cron = data.cronExpression
           this.formItem.startTime = data.startDate
           this.formItem.endTime = data.endDate
-          this.formItem.repeatInterval = data.repeatInterval?parseInt(data.repeatInterval):0
-          this.formItem.repeatCountType = data.repeatCount +''
+          this.formItem.repeatInterval = data.repeatInterval ? parseInt(data.repeatInterval) : 0
+          this.formItem.repeatCountType = data.repeatCount + ''
           this.formItem.path = data.data.path
           this.formItem.serviceId = data.data.serviceId
           this.formItem.method = data.data.method
@@ -239,9 +244,9 @@
           cron: '',
           startTime: '',
           endTime: '',
-          repeatInterval:10000,
-          repeatCountType:'0',
-          repeatCount:0,
+          repeatInterval: 10000,
+          repeatCountType: '0',
+          repeatCount: 0,
           serviceId: '',
           path: '',
           method: '',
@@ -257,9 +262,9 @@
       handleSubmit () {
         this.$refs['form1'].validate((valid) => {
           if (valid) {
-            if(this.formItem.jobType ==='simple'){
-              this.formItem.startTime = this.formItem.startTime? this.formItem.startTime.pattern('yyyy-MM-dd HH:mm:ss') : ''
-              this.formItem.endTime = this.formItem.endTime? this.formItem.endTime.pattern('yyyy-MM-dd HH:mm:ss') : ''
+            if (this.formItem.jobType === 'simple') {
+              this.formItem.startTime = this.formItem.startTime ? this.formItem.startTime.pattern('yyyy-MM-dd HH:mm:ss') : ''
+              this.formItem.endTime = this.formItem.endTime ? this.formItem.endTime.pattern('yyyy-MM-dd HH:mm:ss') : ''
             }
             this.saving = true
             if (!this.formItem.newData) {

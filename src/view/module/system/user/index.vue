@@ -29,14 +29,14 @@
         </ButtonGroup>
       </div>
 
-      <Table border :columns="columns" :data="data" :loading="loading" >
+      <Table border :columns="columns" :data="data" :loading="loading">
         <template slot="status" slot-scope="{ row }">
           <Badge v-if="row.status===1" status="success" text="正常"/>
           <Badge v-else-if="row.status===2" status="warning" text="锁定"/>
           <Badge v-else="" status="error" text="禁用"/>
         </template>
         <template slot="action" slot-scope="{ row }">
-          <a :disabled="hasAuthority('systemUserEdit')?false:true"  @click="handleModal(row)">编辑</a>&nbsp;
+          <a :disabled="hasAuthority('systemUserEdit')?false:true" @click="handleModal(row)">编辑</a>&nbsp;
           <Dropdown v-show="hasAuthority('systemUserEdit')" transfer ref="dropdown" @on-click="handleClick($event,row)">
             <a href="javascript:void(0)">
               <span>更多</span>
@@ -183,7 +183,7 @@
           callback(new Error('登录名不能为空'))
         } else if (value !== '' && !reg.test(value)) {
           callback(new Error('只允许字母、数字、下划线'))
-        } else if(value !== '' && !reg2.test(value)){
+        } else if (value !== '' && !reg2.test(value)) {
           callback(new Error('长度6到18个字符'))
         } else {
           callback()
@@ -195,7 +195,7 @@
           callback(new Error('请输入密码'))
         } else if (value !== this.formItem.password) {
           callback(new Error('两次输入密码不一致'))
-        } else if(value !== '' && !reg2.test(value)){
+        } else if (value !== '' && !reg2.test(value)) {
           callback(new Error('长度6到18个字符'))
         } else {
           callback()
@@ -527,8 +527,8 @@
               startPid: '0'
             }
             if (res2.code === 0 && res2.data && res2.data.length > 0) {
-              let  menus = []
-              let  actions= []
+              let menus = []
+              let actions = []
               res2.data.map(item => {
                 // 菜单权限
                 if (item.authority.indexOf('MENU_') != -1 && !menus.includes(item.authorityId)) {

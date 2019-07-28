@@ -35,12 +35,13 @@
             show-total
             @on-change="handlePage" @on-page-size-change='handlePageSize'></Page>
     </Card>
-    <Drawer width="30"  v-model="drawer">
+    <Drawer width="30" v-model="drawer">
       <div slot="header">
         <Badge v-if="currentRow.httpStatus==='200'" status="success"/>
         <Badge v-else="" status="error"/>
         {{currentRow.httpStatus}}
         {{currentRow.path}} - {{currentRow.serviceId}}
+
       </div>
       <div>
         <h3>请求头</h3>

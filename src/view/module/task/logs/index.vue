@@ -38,13 +38,14 @@
         <Badge v-if="currentRow.status===1" status="success"/>
         <Badge v-else="" status="error"/>
         {{currentRow.jobName}}
+
       </div>
       <div>
-       <p><strong>执行类：</strong>{{ currentRow.jobClass }}</p>
-       <p><strong>触发器：</strong>{{currentRow.triggerClass}}</p>
+        <p><strong>执行类：</strong>{{ currentRow.jobClass }}</p>
+        <p><strong>触发器：</strong>{{currentRow.triggerClass}}</p>
         <p><strong>运行时长：</strong>{{ currentRow.runTime }} ms  </p>
-       <p v-if="currentRow.cronExpression"><strong>cron表达式：</strong>{{currentRow.cronExpression}}</p>
-       <p v-else=""><strong>调度时间：</strong>: {{currentRow.startDate}} ~ {{currentRow.endDate}}</p>
+        <p v-if="currentRow.cronExpression"><strong>cron表达式：</strong>{{currentRow.cronExpression}}</p>
+        <p v-else=""><strong>调度时间：</strong>: {{currentRow.startDate}} ~ {{currentRow.endDate}}</p>
         <strong>执行参数</strong>
         <pre>
               {{ currentRow.jobData ? JSON.stringify(JSON.parse(currentRow.jobData), null, 4) : ''}}
@@ -83,7 +84,7 @@
           {
             title: '触发器',
             width: 350,
-            slot:'type'
+            slot: 'type'
           },
           {
             title: '执行类',

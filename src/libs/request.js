@@ -1,16 +1,18 @@
 import axios from 'axios'
 import qs from 'qs'
 import config from '@/config'
-import {getToken} from '@/libs/util'
-import {Message} from 'iview'
+import { getToken } from '@/libs/util'
+import { Message } from 'iview'
 
-let baseUrl = "";   //这里是一个默认的url，可以没有
+let baseUrl = ''
 switch (process.env.NODE_ENV) {
   case 'development':
-    baseUrl = config.apiUrl.dev  //这里是本地的请求url
+    // 这里是本地的请求url
+    baseUrl = config.apiUrl.dev
     break
   case 'production':
-    baseUrl = config.apiUrl.pro   //生产环境url
+    // 生产环境url
+    baseUrl = config.apiUrl.pro
     break
 }
 
@@ -19,8 +21,10 @@ switch (process.env.NODE_ENV) {
  * @type {AxiosInstance}
  */
 const service = axios.create({
-  baseURL: baseUrl, // api的base_url
-  timeout: 30000  // 设置请求超时时间30s
+  // api的base_url
+  baseURL: baseUrl,
+  // 设置请求超时时间30s
+  timeout: 30000
 })
 
 service.apiUrl = baseUrl
@@ -29,15 +33,15 @@ service.apiUrl = baseUrl
  * 请求参数处理
  */
 service.interceptors.request.use((config) => {
-    config.method === 'post'
-      ? config.data = qs.stringify({...config.data})
-      : config.params = {...config.params}
-    const token = getToken()
-    if (token) {
-      config.headers['Authorization'] = 'Bearer ' + token
-    }
-    return config
+  config.method === 'post'
+    ? config.data = qs.stringify({ ...config.data })
+    : config.params = { ...config.params }
+  const token = getToken()
+  if (token) {
+    config.headers['Authorization'] = 'Bearer ' + token
   }
+  return config
+}
 )
 /**
  * 响应结果处理
@@ -50,7 +54,7 @@ service.interceptors.response.use(
       return Promise.resolve(response.data)
     } else {
       // 使用Promise.reject 响应
-      Message.error({content: response.data.message})
+      Message.error({ content: response.data.message })
       return Promise.reject(response.data)
     }
   }, error => {
@@ -70,12 +74,12 @@ service.interceptors.response.use(
           message = error.response.data.message ? error.response.data.message : '服务器错误'
           break
       }
-      Message.error({content: message})
+      Message.error({ content: message })
       // 请求错误处理
       return Promise.reject(error)
     } else {
       message = '连接服务器失败'
-      Message.error({content: message})
+      Message.error({ content: message })
       return Promise.reject(error)
     }
   }

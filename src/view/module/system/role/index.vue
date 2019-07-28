@@ -18,7 +18,8 @@
       </Form>
       <div class="search-con search-con-top">
         <ButtonGroup>
-          <Button :disabled="hasAuthority('systemRoleEdit')?false:true"   class="search-btn" type="primary" @click="handleModal()">
+          <Button :disabled="hasAuthority('systemRoleEdit')?false:true" class="search-btn" type="primary"
+                  @click="handleModal()">
             <span>添加</span>
           </Button>
         </ButtonGroup>
@@ -29,13 +30,15 @@
           <Badge v-else="" status="error" text="禁用"/>
         </template>
         <template slot="action" slot-scope="{ row }">
-          <a  @click="handleModal(row)" :disabled="row.roleCode != 'all' && hasAuthority('systemRoleEdit')?false:true">编辑</a>&nbsp;
+          <a @click="handleModal(row)"
+             :disabled="row.roleCode != 'all' && hasAuthority('systemRoleEdit')?false:true">编辑</a>&nbsp;
           <Dropdown v-show="hasAuthority('systemRoleEdit')" transfer ref="dropdown" @on-click="handleClick($event,row)">
             <a href="javascript:void(0)" :disabled="row.roleCode === 'all' ?true:false">
               <span>更多</span>
-              <Icon type="ios-arrow-down"></Icon></a>
+              <Icon type="ios-arrow-down"></Icon>
+            </a>
             <DropdownMenu slot="list">
-              <DropdownItem  name="remove">删除角色</DropdownItem>
+              <DropdownItem name="remove">删除角色</DropdownItem>
             </DropdownMenu>
           </Dropdown>&nbsp;
         </template>
@@ -52,7 +55,7 @@
            @on-cancel="handleReset">
       <div>
         <Tabs @on-click="handleTabClick" :value="current">
-          <TabPane  label="角色信息" name="form1">
+          <TabPane label="角色信息" name="form1">
             <Form v-show="current == 'form1'" ref="form1" :model="formItem" :rules="formItemRules" :label-width="100">
               <FormItem label="角色标识" prop="roleCode">
                 <Input v-model="formItem.roleCode" placeholder="请输入内容"></Input>
@@ -103,7 +106,7 @@
             </Form>
           </TabPane>
           <TabPane :disabled="!formItem.roleId" label="添加成员" name="form3">
-            <Form v-show="current == 'form3'" ref="form3" :model="formItem" :rules="formItemRules" >
+            <Form v-show="current == 'form3'" ref="form3" :model="formItem" :rules="formItemRules">
               <FormItem prop="authorities">
                 <Transfer
                   :data="selectUsers"
@@ -115,7 +118,7 @@
                   filterable>
                 </Transfer>
               </FormItem>
-          </Form>
+            </Form>
           </TabPane>
         </Tabs>
         <div class="drawer-footer">
@@ -276,15 +279,15 @@
         if (data) {
           this.formItem = Object.assign({}, this.formItem, data)
         }
-        if ( this.current === this.forms[0]) {
+        if (this.current === this.forms[0]) {
           this.modalTitle = data ? '编辑角色 - ' + data.roleName : '添加用户'
           this.modalVisible = true
         }
-        if ( this.current === this.forms[1]) {
+        if (this.current === this.forms[1]) {
           this.modalTitle = data ? '分配权限 - ' + data.roleName : '分配权限'
           this.handleLoadRoleGranted(this.formItem.roleId)
         }
-        if ( this.current === this.forms[2]) {
+        if (this.current === this.forms[2]) {
           this.modalTitle = data ? '添加成员 - ' + data.roleName : '添加成员'
           this.handleLoadRoleUsers(this.formItem.roleId)
         }
@@ -451,8 +454,8 @@
               startPid: '0'
             }
             if (res2.code === 0 && res2.data && res2.data.length > 0) {
-              let  menus = []
-              let  actions= []
+              let menus = []
+              let actions = []
               res2.data.map(item => {
                 // 菜单权限
                 if (item.authority.indexOf('MENU_') != -1 && !menus.includes(item.authorityId)) {
@@ -502,7 +505,7 @@
           if (res2.code === 0) {
             let userIds = []
             res2.data.map(item => {
-              if(!userIds.includes(item.userId)){
+              if (!userIds.includes(item.userId)) {
                 userIds.push(item.userId)
               }
             })

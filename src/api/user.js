@@ -1,11 +1,11 @@
 import request from '@/libs/request'
-import {getToken} from '@/libs/util'
+import { getToken } from '@/libs/util'
 /**
  * 用户登录
  * @param username
  * @param password
  */
-export const login = ({username, password}) => {
+export const login = ({ username, password }) => {
   const data = {
     username,
     password
@@ -23,7 +23,7 @@ export const login = ({username, password}) => {
 export const logout = () => {
   return request({
     url: 'admin/logout/token',
-    data:{token:getToken()},
+    data: { token: getToken() },
     method: 'post'
   })
 }
@@ -48,7 +48,7 @@ export const getCurrentUserMenu = () => {
   })
 }
 
-export const updateCurrentUserInfo = ({nickName, userDesc, avatar}) => {
+export const updateCurrentUserInfo = ({ nickName, userDesc, avatar }) => {
   const data = {
     nickName: nickName,
     userDesc: userDesc,
@@ -74,8 +74,6 @@ export const getUsers = (params) => {
   })
 }
 
-
-
 /**
  * 获取所有用户列表
  */
@@ -98,7 +96,7 @@ export const getAllUsers = () => {
  * @param userDesc
  * @param avatar
  */
-export const addUser = ({userName, password, nickName, status, userType, email, mobile, userDesc, avatar}) => {
+export const addUser = ({ userName, password, nickName, status, userType, email, mobile, userDesc, avatar }) => {
   const data = {
     userName: userName,
     nickName: nickName,
@@ -128,7 +126,7 @@ export const addUser = ({userName, password, nickName, status, userType, email, 
  * @param userDesc
  * @param avatar
  */
-export const updateUser = ({userId, nickName, status, userType, email, mobile, userDesc, avatar}) => {
+export const updateUser = ({ userId, nickName, status, userType, email, mobile, userDesc, avatar }) => {
   const data = {
     userId: userId,
     nickName: nickName,
@@ -150,8 +148,8 @@ export const updateUser = ({userId, nickName, status, userType, email, mobile, u
  * 分配用户角色
  * @param data
  */
-export const addUserRoles = ({userId, grantRoles}) => {
-  const data = {userId: userId, roleIds: grantRoles.join(',')}
+export const addUserRoles = ({ userId, grantRoles }) => {
+  const data = { userId: userId, roleIds: grantRoles.join(',') }
   return request({
     url: 'base/user/roles/add',
     data,
@@ -180,7 +178,7 @@ export const getUserRoles = (userId) => {
  * @param oldPassword
  * @param newPassword
  */
-export const updatePassword = ({userId, password}) => {
+export const updatePassword = ({ userId, password }) => {
   const data = {
     userId: userId,
     password: password
@@ -191,8 +189,3 @@ export const updatePassword = ({userId, password}) => {
     method: 'post'
   })
 }
-
-
-
-
-

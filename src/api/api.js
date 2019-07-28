@@ -5,8 +5,8 @@ import request from '@/libs/request'
  * @param page
  * @param limit
  */
-export const getApis = ({page, limit, path, apiName, apiCode, serviceId}) => {
-  const params = {page: page, limit: limit, path: path, apiName: apiName, apiCode: apiCode, serviceId: serviceId}
+export const getApis = ({ page, limit, path, apiName, apiCode, serviceId }) => {
+  const params = { page: page, limit: limit, path: path, apiName: apiName, apiCode: apiCode, serviceId: serviceId }
   return request({
     url: 'base/api',
     params,
@@ -18,7 +18,7 @@ export const getApis = ({page, limit, path, apiName, apiCode, serviceId}) => {
  * 获取所有接口
  */
 export const getAllApi = (serviceId) => {
-  const params = {serviceId: serviceId}
+  const params = { serviceId: serviceId }
   return request({
     url: 'base/api/all',
     params: params,
@@ -38,7 +38,7 @@ export const getAllApi = (serviceId) => {
  * @param apiDesc
  * @param isAuth
  */
-export const addApi = ({apiCode, apiName, apiCategory, serviceId, path, status, priority, apiDesc, isAuth,isOpen}) => {
+export const addApi = ({ apiCode, apiName, apiCategory, serviceId, path, status, priority, apiDesc, isAuth, isOpen }) => {
   const data = {
     apiCode: apiCode,
     apiName: apiName,
@@ -49,7 +49,7 @@ export const addApi = ({apiCode, apiName, apiCategory, serviceId, path, status, 
     priority: priority,
     apiDesc: apiDesc,
     isAuth: isAuth,
-    isOpen:isOpen
+    isOpen: isOpen
   }
   return request({
     url: 'base/api/add',
@@ -71,7 +71,7 @@ export const addApi = ({apiCode, apiName, apiCategory, serviceId, path, status, 
  * @param apiDesc
  * @param isAuth
  */
-export const updateApi = ({apiId, apiCode, apiName, apiCategory, serviceId, path, status, priority, apiDesc, isAuth,isOpen}) => {
+export const updateApi = ({ apiId, apiCode, apiName, apiCategory, serviceId, path, status, priority, apiDesc, isAuth, isOpen }) => {
   const data = {
     apiId: apiId,
     apiCode: apiCode,
@@ -102,6 +102,69 @@ export const removeApi = (apiId) => {
   }
   return request({
     url: 'base/api/remove',
+    data,
+    method: 'post'
+  })
+}
+
+/**
+ * 批量删除
+ * @param ids
+ */
+export const batchRemoveApi = (ids) => {
+  const data = {
+    ids: ids.join(',')
+  }
+  return request({
+    url: 'base/api/batch/remove',
+    data,
+    method: 'post'
+  })
+}
+
+/**
+ * 批量修改公开状态
+ * @param ids
+ */
+export const batchUpdateOpenApi = ({ ids, open }) => {
+  const data = {
+    ids: ids.join(','),
+    open: open
+  }
+  return request({
+    url: 'base/api/batch/update/open',
+    data,
+    method: 'post'
+  })
+}
+
+/**
+ * 批量修改状态
+ * @param ids
+ */
+export const batchUpdateStatusApi = ({ ids, status }) => {
+  const data = {
+    ids: ids.join(','),
+    status: status
+  }
+  return request({
+    url: 'base/api/batch/update/status',
+    data,
+    method: 'post'
+  })
+}
+
+/**
+ * 批量修改身份认证
+ * @param ids
+ */
+export const batchUpdateAuthApi = ({ ids, auth }) => {
+  const data = {
+    ids: ids.join(','),
+    auth: auth
+  }
+  return request({
+    url: 'base/api/batch/update/auth',
     data,
     method: 'post'
   })

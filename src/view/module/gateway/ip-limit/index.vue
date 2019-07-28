@@ -15,7 +15,8 @@
       </Form>
       <div class="search-con search-con-top">
         <ButtonGroup>
-          <Button :disabled="hasAuthority('gatewayIpLimitEdit')?false:true"  class="search-btn" type="primary" @click="handleModal()">
+          <Button :disabled="hasAuthority('gatewayIpLimitEdit')?false:true" class="search-btn" type="primary"
+                  @click="handleModal()">
             <span>添加</span>
           </Button>
         </ButtonGroup>
@@ -55,12 +56,14 @@
                 </Select>
               </FormItem>
               <FormItem label="IP地址/域名" prop="ipAddress">
-                <Input v-model="formItem.ipAddress" type="textarea" placeholder="192.168.0.1;192.168.0.2;baidu.com;weixin.com"></Input> 同时支持Ip和域名,多个用分号";"隔开。示例：192.168.0.1;baidu.com;weixin.com
-        </FormItem>
+                <Input v-model="formItem.ipAddress" type="textarea"
+                       placeholder="192.168.0.1;192.168.0.2;baidu.com;weixin.com"></Input> 同时支持Ip和域名,多个用分号";"隔开。示例：192.168.0.1;baidu.com;weixin.com
+
+              </FormItem>
             </Form>
           </TabPane>
-          <TabPane :disabled="!formItem.policyId"  label="绑定接口" name="form2">
-            <Form ref="form2" v-show="current=='form2'" :model="formItem" :rules="formItemRules" >
+          <TabPane :disabled="!formItem.policyId" label="绑定接口" name="form2">
+            <Form ref="form2" v-show="current=='form2'" :model="formItem" :rules="formItemRules">
               <Alert type="warning" show-icon>请注意：如果API上原来已经绑定了一个策略，则会被本策略覆盖，请慎重选择！</Alert>
               <FormItem prop="authorities">
                 <Transfer
@@ -101,7 +104,7 @@
           total: 0,
           page: 1,
           limit: 10,
-          policyName:''
+          policyName: ''
         },
         current: 'form1',
         forms: [
@@ -181,11 +184,11 @@
         if (data) {
           this.formItem = Object.assign({}, this.formItem, data)
         }
-        if (this.current  === this.forms[0]) {
+        if (this.current === this.forms[0]) {
           this.modalTitle = data ? '编辑来源限制策略 - ' + this.formItem.policyName : '添加来源限制'
           this.modalVisible = true
         }
-        if (this.current  === this.forms[1]) {
+        if (this.current === this.forms[1]) {
           this.modalTitle = data ? '绑定接口 - ' + this.formItem.policyName : '绑定接口'
           this.handleIpLimitApi(this.formItem.policyId)
         }
@@ -262,7 +265,7 @@
         }
       },
       handleSearch (page) {
-        if(page){
+        if (page) {
           this.pageInfo.page = page
         }
         this.loading = true
@@ -308,14 +311,14 @@
           if (res1.code === 0) {
             res1.data.map(item => {
               item.key = item.apiId
-              item.label = `${item.prefix.replace('/**','')}${item.path} - ${item.apiName}`
+              item.label = `${item.prefix.replace('/**', '')}${item.path} - ${item.apiName}`
             })
             that.selectApis = res1.data
           }
           if (res2.code === 0) {
             let apiIds = []
             res2.data.map(item => {
-              if(!apiIds.includes(item.apiId)){
+              if (!apiIds.includes(item.apiId)) {
                 apiIds.push(item.apiId)
               }
             })

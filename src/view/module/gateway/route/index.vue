@@ -3,7 +3,8 @@
     <Card shadow>
       <div class="search-con search-con-top">
         <ButtonGroup>
-          <Button :disabled="hasAuthority('gatewayRouteEdit')?false:true"  class="search-btn" type="primary" @click="handleModal()">
+          <Button :disabled="hasAuthority('gatewayRouteEdit')?false:true" class="search-btn" type="primary"
+                  @click="handleModal()">
             <span>添加</span>
           </Button>
         </ButtonGroup>
@@ -20,15 +21,16 @@
         </template>
 
         <template slot="action" slot-scope="{ row }">
-          <a :disabled="hasAuthority('gatewayRouteEdit')?false:true"   @click="handleModal(row)">
+          <a :disabled="hasAuthority('gatewayRouteEdit')?false:true" @click="handleModal(row)">
             编辑</a>&nbsp;
-          <Dropdown v-show="hasAuthority('gatewayRouteEdit')" transfer ref="dropdown" @on-click="handleClick($event,row)">
+          <Dropdown v-show="hasAuthority('gatewayRouteEdit')" transfer ref="dropdown"
+                    @on-click="handleClick($event,row)">
             <a href="javascript:void(0)">
               <span>更多</span>
               <Icon type="ios-arrow-down"></Icon>
             </a>
             <DropdownMenu slot="list">
-              <DropdownItem  name="remove">删除</DropdownItem>
+              <DropdownItem name="remove">删除</DropdownItem>
             </DropdownMenu>
           </Dropdown>&nbsp;
         </template>
@@ -44,7 +46,7 @@
       <div>
         <Form ref="routeForm" :model="formItem" :rules="formItemRules" :label-width="100">
           <FormItem label="路由名称" prop="routeDesc">
-            <Input v-model="formItem.routeDesc"  placeholder="请输入内容"></Input>
+            <Input v-model="formItem.routeDesc" placeholder="请输入内容"></Input>
           </FormItem>
           <FormItem label="路由标识" prop="routeName">
             <Input v-model="formItem.routeName" placeholder="默认使用服务名称{application.name}"></Input>
@@ -115,8 +117,8 @@
         selectServiceList: [],
         formItemRules: {
           routeDesc: [
-          {required: true, message: '路由名称不能为空', trigger: 'blur'}
-         ],
+            {required: true, message: '路由名称不能为空', trigger: 'blur'}
+          ],
           routeName: [
             {required: true, message: '路由标识不能为空', trigger: 'blur'}
           ],
@@ -133,7 +135,7 @@
           retryable: 0,
           status: 1,
           routeName: '',
-          routeDesc:''
+          routeDesc: ''
         },
         columns: [
           {
@@ -191,9 +193,9 @@
         this.formItem.status = this.formItem.status + ''
         this.formItem.stripPrefix = this.formItem.stripPrefix + ''
         this.formItem.retryable = this.formItem.retryable + ''
-        this.formItem.url  =  this.formItem.service ? '':this.formItem.url
-        this.formItem.service  =  this.formItem.url ? '':this.formItem.service
-        this.selectType = this.formItem.url ?'url':'service'
+        this.formItem.url = this.formItem.service ? '' : this.formItem.url
+        this.formItem.service = this.formItem.url ? '' : this.formItem.service
+        this.selectType = this.formItem.url ? 'url' : 'service'
         this.modalVisible = true
       },
       handleReset () {
@@ -206,7 +208,7 @@
           retryable: 0,
           status: 1,
           routeName: '',
-          routeDesc:''
+          routeDesc: ''
         }
         this.formItem = newData
         //重置验证

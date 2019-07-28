@@ -5,8 +5,8 @@ import request from '@/libs/request'
  * @param page
  * @param limit
  */
-export const getJobLogs = ({page, limit,jobName}) => {
-  const params = {page: page, limit: limit,jobName:jobName}
+export const getJobLogs = ({ page, limit, jobName }) => {
+  const params = { page: page, limit: limit, jobName: jobName }
   return request({
     url: 'task/job/logs',
     params,
@@ -19,8 +19,8 @@ export const getJobLogs = ({page, limit,jobName}) => {
  * @param page
  * @param limit
  */
-export const getJobs = ({page, limit}) => {
-  const params = {page: page, limit: limit}
+export const getJobs = ({ page, limit }) => {
+  const params = { page: page, limit: limit }
   return request({
     url: 'task/job',
     params,
@@ -86,8 +86,6 @@ export const removeJob = (jobName) => {
   })
 }
 
-
-
 /**
  * 暂停任务
  * @param apiId
@@ -102,7 +100,6 @@ export const pauseJob = (jobName) => {
     method: 'post'
   })
 }
-
 
 /**
  * 恢复任务

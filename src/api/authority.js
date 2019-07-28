@@ -3,8 +3,6 @@
  */
 import request from '@/libs/request'
 
-
-
 /**
  * 获取用户已分配权限
  * @param userId
@@ -69,12 +67,11 @@ export const getAuthorityApi = (serviceId) => {
   return request({
     url: 'base/authority/api',
     method: 'get',
-    params:{
-      serviceId:serviceId
+    params: {
+      serviceId: serviceId
     }
   })
 }
-
 
 export const getAuthorityAction = (actionId) => {
   const params = {
@@ -91,11 +88,11 @@ export const getAuthorityAction = (actionId) => {
  * 用户授权
  * @param userId
  */
-export const grantAuthorityUser = ({userId,expireTime,authorityIds}) => {
+export const grantAuthorityUser = ({ userId, expireTime, authorityIds }) => {
   const data = {
     userId: userId,
-    expireTime:expireTime,
-    authorityIds:authorityIds.join(",")
+    expireTime: expireTime,
+    authorityIds: authorityIds.join(',')
   }
   return request({
     url: 'base/authority/user/grant',
@@ -108,11 +105,11 @@ export const grantAuthorityUser = ({userId,expireTime,authorityIds}) => {
  * 角色授权
  * @param userId
  */
-export const grantAuthorityRole = ({roleId,expireTime,authorityIds}) => {
+export const grantAuthorityRole = ({ roleId, expireTime, authorityIds }) => {
   const data = {
     roleId: roleId,
-    expireTime:expireTime,
-    authorityIds:authorityIds.join(",")
+    expireTime: expireTime,
+    authorityIds: authorityIds.join(',')
   }
   return request({
     url: 'base/authority/role/grant',
@@ -125,11 +122,11 @@ export const grantAuthorityRole = ({roleId,expireTime,authorityIds}) => {
  * 应用授权
  * @param userId
  */
-export const grantAuthorityApp = ({appId,expireTime,authorityIds}) => {
+export const grantAuthorityApp = ({ appId, expireTime, authorityIds }) => {
   const data = {
     appId: appId,
-    expireTime:expireTime,
-    authorityIds:authorityIds.join(",")
+    expireTime: expireTime,
+    authorityIds: authorityIds.join(',')
   }
   return request({
     url: 'base/authority/app/grant',
@@ -143,10 +140,10 @@ export const grantAuthorityApp = ({appId,expireTime,authorityIds}) => {
  * @param actionId
  * @param apiIds
  */
-export const grantAuthorityAction = ({actionId, authorityIds}) => {
+export const grantAuthorityAction = ({ actionId, authorityIds }) => {
   const data = {
     actionId: actionId,
-    authorityIds: authorityIds.join(",")
+    authorityIds: authorityIds.join(',')
   }
   return request({
     url: 'base/authority/action/grant',
@@ -154,5 +151,3 @@ export const grantAuthorityAction = ({actionId, authorityIds}) => {
     method: 'post'
   })
 }
-
-

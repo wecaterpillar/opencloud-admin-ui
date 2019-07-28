@@ -1,39 +1,39 @@
 <template>
   <div>
     <Card shadow>
-        <Steps :current="current">
-          <Step title="数据库连接"></Step>
-          <Step title="生产代码"></Step>
-        </Steps>
+      <Steps :current="current">
+        <Step title="数据库连接"></Step>
+        <Step title="生产代码"></Step>
+      </Steps>
       <Form style="margin-top: 20px;" ref="form" :model="formItem" :rules="formItemRules" :label-width="140">
         <FormItem v-show="current===0" label="数据库类型" prop="type">
-          <Select  v-model="formItem.type">
+          <Select v-model="formItem.type">
             <Option value="mysql">mysql</Option>
             <Option disabled value="oracle">oracle</Option>
           </Select>
         </FormItem>
         <FormItem v-show="current===0" label="驱动名称" prop="driverName">
-          <Input v-model="formItem.driverName"  placeholder="请输入内容"></Input>
+          <Input v-model="formItem.driverName" placeholder="请输入内容"></Input>
         </FormItem>
         <FormItem v-show="current===0" label="连接地址" prop="url">
-          <Input v-model="formItem.url"  placeholder="请输入内容"></Input>
+          <Input v-model="formItem.url" placeholder="请输入内容"></Input>
         </FormItem>
         <FormItem v-show="current===0" label="用户名" prop="username">
-          <Input v-model="formItem.username"  placeholder="请输入内容"></Input>
+          <Input v-model="formItem.username" placeholder="请输入内容"></Input>
         </FormItem>
         <FormItem v-show="current===0" label="密码" prop="password">
-          <Input v-model="formItem.password" type="password"  placeholder="请输入内容"></Input>
+          <Input v-model="formItem.password" type="password" placeholder="请输入内容"></Input>
         </FormItem>
         <Row>
-        <Col span="10">
+          <Col span="10">
           <FormItem v-show="current===1" label="模块名称" prop="moduleName">
-            <Input v-model="formItem.moduleName"  placeholder="请输入内容"></Input>
+            <Input v-model="formItem.moduleName" placeholder="请输入内容"></Input>
           </FormItem>
           <FormItem v-show="current===1" label="顶级包名" prop="parentPackage">
-            <Input v-model="formItem.parentPackage"  placeholder="请输入内容"></Input>
+            <Input v-model="formItem.parentPackage" placeholder="请输入内容"></Input>
           </FormItem>
           <FormItem v-show="current===1" label="作者" prop="author">
-            <Input v-model="formItem.author"  placeholder="请输入内容"></Input>
+            <Input v-model="formItem.author" placeholder="请输入内容"></Input>
           </FormItem>
           </Col>
           <Col span="14">
@@ -48,9 +48,9 @@
             </Transfer>
           </FormItem>
           <FormItem v-show="current===1" label="忽略表前缀" prop="tablePrefix">
-          <Select v-model="formItem.tablePrefix" multiple style="width:260px">
-            <Option v-for="item in formItem.tablePrefix" :value="item" :key="item">{{ item }}</Option>
-          </Select>
+            <Select v-model="formItem.tablePrefix" multiple style="width:260px">
+              <Option v-for="item in formItem.tablePrefix" :value="item" :key="item">{{ item }}</Option>
+            </Select>
           </FormItem>
           </Col>
         </Row>
@@ -72,8 +72,8 @@
     data () {
       return {
         saving: false,
-        current:0,
-        selectTables:[],
+        current: 0,
+        selectTables: [],
         formItemRules: {
           type: [
             {required: true, message: '数据库类型不能为空', trigger: 'blur'}
@@ -141,17 +141,17 @@
             this.saving = true
             const data = Object.assign({}, this.formItem)
             Generate.execute(data).then(res => {
-                if(res.code===0){
-                  let result  =  res.data
-                  let href = Generate.downloadPath +'?filePath='+result.filePath
-                  this.$Modal.confirm({
-                    title: '是否下载',
-                    content: `代码生成成功! ${result.fileName}`,
-                    onOk: () => {
-                      window.open(href, '_blank');
-                    }
-                  });
-                }
+              if (res.code === 0) {
+                let result = res.data
+                let href = Generate.downloadPath + '?filePath=' + result.filePath
+                this.$Modal.confirm({
+                  title: '是否下载',
+                  content: `代码生成成功! ${result.fileName}`,
+                  onOk: () => {
+                    window.open(href, '_blank');
+                  }
+                });
+              }
             }).finally(() => {
               this.saving = false
             })
@@ -160,11 +160,11 @@
       },
       handleTransferChange (newTargetKeys, direction, moveKeys) {
         let tablePrefix = []
-        newTargetKeys.map(item =>{
-           let prefix = item.split("_")[0]+'_'
-           if(!tablePrefix.includes(prefix)){
-             tablePrefix.push(prefix)
-           }
+        newTargetKeys.map(item => {
+          let prefix = item.split("_")[0] + '_'
+          if (!tablePrefix.includes(prefix)) {
+            tablePrefix.push(prefix)
+          }
         })
         this.formItem.tablePrefix = tablePrefix
         this.formItem.includeTables = newTargetKeys
@@ -175,15 +175,15 @@
     watch: {
       'current' (val) {
         let that = this
-        if(val===1){
+        if (val === 1) {
           Generate.tables(this.formItem).then(res => {
             if (res.code === 0) {
               let items = []
               res.data.map(item => {
                 items.push({
-                  key : item.name,
-                  label : `${item.name} - ${item.comment}`,
-                  disabled :false
+                  key: item.name,
+                  label: `${item.name} - ${item.comment}`,
+                  disabled: false
                 })
               })
               that.selectTables = items

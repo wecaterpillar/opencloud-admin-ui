@@ -1,13 +1,13 @@
 import Cookies from 'js-cookie'
 // cookie保存的天数
 import config from '@/config'
-import {forEach, hasOneOf, objEqual} from '@/libs/tools'
+import { forEach, hasOneOf, objEqual } from '@/libs/tools'
 
 export const TOKEN_KEY = 'token'
 
 export const setToken = (token, auto) => {
   if (auto) {
-    Cookies.set(TOKEN_KEY, token, {expires: config.cookieExpires || 1})
+    Cookies.set(TOKEN_KEY, token, { expires: config.cookieExpires || 1 })
   } else {
     Cookies.set(TOKEN_KEY, token)
   }
@@ -15,7 +15,7 @@ export const setToken = (token, auto) => {
 
 export const getToken = () => {
   const token = Cookies.get(TOKEN_KEY)
-  if (token  &&  token !== 'undefined') {
+  if (token && token !== 'undefined') {
     return token
   } else {
     return false
@@ -66,13 +66,13 @@ export const getMenuByRouter = (list, access) => {
  * @returns {Array}
  */
 export const getBreadCrumbList = (route, homeRoute) => {
-  let homeItem = {...homeRoute, icon: homeRoute.meta.icon}
+  let homeItem = { ...homeRoute, icon: homeRoute.meta.icon }
   let routeMetched = route.matched
   if (routeMetched.some(item => item.name === homeRoute.name)) return [homeItem]
   let res = routeMetched.filter(item => {
     return item.meta === undefined || !item.meta.hide
   }).map(item => {
-    let meta = {...item.meta}
+    let meta = { ...item.meta }
     if (meta.title && typeof meta.title === 'function') meta.title = meta.title(route)
     let obj = {
       icon: (item.meta && item.meta.icon) || '',
@@ -84,12 +84,12 @@ export const getBreadCrumbList = (route, homeRoute) => {
   res = res.filter(item => {
     return !item.meta.hideInMenu
   })
-  return [{...homeItem, to: homeRoute.path}, ...res]
+  return [{ ...homeItem, to: homeRoute.path }, ...res]
 }
 
 export const getRouteTitleHandled = (route) => {
-  let router = {...route}
-  let meta = {...route.meta}
+  let router = { ...route }
+  let meta = { ...route.meta }
   let title = ''
   if (meta.title) {
     if (typeof meta.title === 'function') {
@@ -157,12 +157,12 @@ export const getHomeRoute = (routers, homeName = 'home') => {
  * @description 如果该newRoute已经存在则不再添加
  */
 export const getNewTagList = (list, newRoute) => {
-  const {name, path, meta} = newRoute
+  const { name, path, meta } = newRoute
   let newList = [...list]
   if (newList.findIndex(item => item.name === name) >= 0) {
     return newList
   } else {
-    newList.push({name, path, meta})
+    newList.push({ name, path, meta })
   }
   return newList
 }
@@ -466,50 +466,29 @@ export const formatRouters = (array, access) => {
 
 export const filterRouter = (array, access, routers) => {
   let list = array.map(item => {
-      let path = startWith(item.path, '/') ? item.path.substring(1) : item.path
-      let url = item.scheme + item.path
-      let router = {
-        //使用菜单id不使用menuCode防止修改后,刷新后缓存的页面无法找到
-        name: `${item.menuCode}`,
-        path: url,
-        meta: {
-          access: access,
-          hideInMenu: false,
-          title: item.menuName,
-          notCache: true,
-          icon: item.icon || 'md-document',
-          hideInBread: false,
-        },
-        children: []
+    let path = startWith(item.path, '/') ? item.path.substring(1) : item.path
+    let url = item.scheme + item.path
+    let router = {
+      // 使用菜单id不使用menuCode防止修改后,刷新后缓存的页面无法找到
+      name: `${item.menuCode}`,
+      path: url,
+      meta: {
+        access: access,
+        hideInMenu: false,
+        title: item.menuName,
+        notCache: true,
+        icon: item.icon || 'md-document',
+        hideInBread: false
+      },
+      children: []
+    }
+    if (item.parentId === 0 || item.parentId === '0') {
+      // 根节点
+      router.path = '/'
+      router.component = (resolve) => {
+        require(['_c/main'], resolve)
       }
-      if (item.parentId === 0 || item.parentId === '0') {
-        // 根节点
-        router.path = '/'
-        router.component = (resolve) => {
-          require(['_c/main'], resolve)
-        }
-        if (!hasChild(item)) {
-          // 非根节点
-          if (item.target === '_blank') {
-            // 新窗口打开,使用meta.href
-            router.meta.href = url
-          } else {
-            if (item.scheme === '/') {
-              // 内部组件
-              router.component = (resolve) => {
-                require([`@/view/module/${path}.vue`], resolve)
-              }
-            } else {
-              // 传递iframe路径参数
-              router.path = `/iframe?src=${encodeURIComponent(url)}`
-              // frame组件
-              router.component = (resolve) => {
-                require([`_c/iframe-view`], resolve)
-              }
-            }
-          }
-        }
-      } else {
+      if (!hasChild(item)) {
         // 非根节点
         if (item.target === '_blank') {
           // 新窗口打开,使用meta.href
@@ -529,18 +508,39 @@ export const filterRouter = (array, access, routers) => {
             }
           }
         }
-        // 多级菜单
-        if(hasChild(item)){
+      }
+    } else {
+      // 非根节点
+      if (item.target === '_blank') {
+        // 新窗口打开,使用meta.href
+        router.meta.href = url
+      } else {
+        if (item.scheme === '/') {
+          // 内部组件
           router.component = (resolve) => {
-            require(['_c/parent-view'], resolve)
+            require([`@/view/module/${path}.vue`], resolve)
+          }
+        } else {
+          // 传递iframe路径参数
+          router.path = `/iframe?src=${encodeURIComponent(url)}`
+          // frame组件
+          router.component = (resolve) => {
+            require([`_c/iframe-view`], resolve)
           }
         }
       }
+      // 多级菜单
       if (hasChild(item)) {
-        router.children.push(...filterRouter(item.children, access, []))
+        router.component = (resolve) => {
+          require(['_c/parent-view'], resolve)
+        }
       }
-      return router
     }
+    if (hasChild(item)) {
+      router.children.push(...filterRouter(item.children, access, []))
+    }
+    return router
+  }
   )
   routers.push(...list)
   return routers
@@ -627,7 +627,7 @@ export const listToTree = (array, startPid, currentDept, opt) => {
         if (nextChild.length > 0) {
           item['hasChild'] = true
           item[opt.childKey] = nextChild
-        }else{
+        } else {
           item['hasChild'] = false
         }
         return item
@@ -657,21 +657,21 @@ export const readUserAgent = (ua) => {
   let data = {
     terminal: '',
     browser: '',
-    terminalType: {},
+    terminalType: {}
   }
   data.terminalType = {
-    trident: ua.indexOf('Trident') > -1, //IE内核
-    presto: ua.indexOf('Presto') > -1, //opera内核
-    webKit: ua.indexOf('AppleWebKit') > -1, //苹果、谷歌内核
-    gecko: ua.indexOf('Gecko') > -1 && ua.indexOf('KHTML') == -1, //火狐内核
-    mobile: !!ua.match(/AppleWebKit.*Mobile.*/), //是否为移动终端
-    ios: !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), //ios终端
-    android: ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1, //android终端
-    iPhone: ua.indexOf('iPhone') > -1, //是否为iPhone或者QQHD浏览器
-    iPad: ua.indexOf('iPad') > -1, //是否iPad
-    webApp: ua.indexOf('Safari') == -1, //是否web应该程序，没有头部与底部
-    weixin: ua.indexOf('MicroMessenger') > -1, //是否微信 （2015-01-22新增）
-    qq: ua.match(/\sQQ/i) == ' qq' //是否QQ
+    trident: ua.indexOf('Trident') > -1, // IE内核
+    presto: ua.indexOf('Presto') > -1, // opera内核
+    webKit: ua.indexOf('AppleWebKit') > -1, // 苹果、谷歌内核
+    gecko: ua.indexOf('Gecko') > -1 && ua.indexOf('KHTML') == -1, // 火狐内核
+    mobile: !!ua.match(/AppleWebKit.*Mobile.*/), // 是否为移动终端
+    ios: !!ua.match(/\(i[^;]+;( U;)? CPU.+Mac OS X/), // ios终端
+    android: ua.indexOf('Android') > -1 || ua.indexOf('Adr') > -1, // android终端
+    iPhone: ua.indexOf('iPhone') > -1, // 是否为iPhone或者QQHD浏览器
+    iPad: ua.indexOf('iPad') > -1, // 是否iPad
+    webApp: ua.indexOf('Safari') == -1, // 是否web应该程序，没有头部与底部
+    weixin: ua.indexOf('MicroMessenger') > -1, // 是否微信 （2015-01-22新增）
+    qq: ua.match(/\sQQ/i) == ' qq' // 是否QQ
   }
   if (data.terminalType.ios || data.terminalType.iPhone || data.terminalType.iPad) {
     data.terminal = '苹果'

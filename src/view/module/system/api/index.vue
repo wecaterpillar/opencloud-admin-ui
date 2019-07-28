@@ -1,4 +1,4 @@
-<template>
+<template xmlns="http://www.w3.org/1999/html">
   <div>
     <Card shadow>
       <Form ref="searchForm"
@@ -24,15 +24,57 @@
       </Form>
       <div class="search-con search-con-top">
         <ButtonGroup>
-          <Button :disabled="hasAuthority('systemApiEdit')?false:true"  class="search-btn" type="primary" @click="handleModal()">
+          <Button :disabled="hasAuthority('systemApiEdit')?false:true" class="search-btn" type="primary"
+                  @click="handleModal()">
             <span>添加</span>
           </Button>
         </ButtonGroup>
+        <Dropdown v-if="tableSelection.length>0 && hasAuthority('systemApiEdit')" @on-click="handleBatchClick"
+                  style="margin-left: 20px">
+          <Button>
+            <span>批量操作</span>
+            <Icon type="ios-arrow-down"></Icon>
+          </Button>
+          <DropdownMenu slot="list">
+            <DropdownItem name="remove">删除</DropdownItem>
+            <Dropdown placement="right-start">
+              <DropdownItem>
+                <span>状态</span>
+                <Icon type="ios-arrow-forward"></Icon>
+              </DropdownItem>
+              <DropdownMenu slot="list">
+                <DropdownItem name="status1">启用</DropdownItem>
+                <DropdownItem name="status2">禁用</DropdownItem>
+                <DropdownItem name="status3">维护中</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <Dropdown placement="right-start">
+              <DropdownItem>
+                <span>公开访问</span>
+                <Icon type="ios-arrow-forward"></Icon>
+              </DropdownItem>
+              <DropdownMenu slot="list">
+                <DropdownItem name="open1">公开的</DropdownItem>
+                <DropdownItem name="open2">内部的</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+            <Dropdown placement="right-start">
+              <DropdownItem>
+                <span>身份认证</span>
+                <Icon type="ios-arrow-forward"></Icon>
+              </DropdownItem>
+              <DropdownMenu slot="list">
+                <DropdownItem name="auth1">身份认证</DropdownItem>
+                <DropdownItem name="auth2">无需认证</DropdownItem>
+              </DropdownMenu>
+            </Dropdown>
+          </DropdownMenu>
+        </Dropdown>
       </div>
       <Alert show-icon>
         <span>自动扫描<code>@EnableResourceServer</code>资源服务器接口信息,注:自动添加的接口,都是未公开的. <code>只有公开的接口,才可以通过网关访问。否则将提示:"请求地址,拒绝访问!"</code></span>
       </Alert>
-      <Table border :columns="columns" :data="data" :loading="loading">
+      <Table @on-selection-change="handleTableSelectChange" border :columns="columns" :data="data" :loading="loading">
         <template slot="apiName" slot-scope="{ row }">
           <span>{{row.apiName}}</span>
         </template>
@@ -41,14 +83,14 @@
           <Tag v-else-if="row.isOpen!==1">内部的</Tag>
           <Tag color="green" v-if="row.isAuth===1">身份认证</Tag>
           <Tag v-else-if="row.isAuth!==1">无需认证</Tag>
-          <Tag v-if="row.status===1"   color="green">启用</Tag>
-          <Tag v-else-if="row.status===2"   color="orange">维护中</Tag>
-          <Tag v-else=""  color="red">禁用</Tag>
+          <Tag v-if="row.status===1" color="green">启用</Tag>
+          <Tag v-else-if="row.status===2" color="orange">维护中</Tag>
+          <Tag v-else="" color="red">禁用</Tag>
         </template>
         <template slot="action" slot-scope="{ row }">
-          <a :disabled="hasAuthority('systemApiEdit')?false:true"   @click="handleModal(row)">
+          <a :disabled="hasAuthority('systemApiEdit')?false:true" @click="handleModal(row)">
             编辑</a>&nbsp;
-          <a :disabled="hasAuthority('systemApiEdit')?false:true"   @click="handleRemove(row)">
+          <a :disabled="hasAuthority('systemApiEdit')?false:true" @click="handleRemove(row)">
             删除</a>
         </template>
       </Table>
@@ -84,7 +126,8 @@
         </Alert>
         <Form ref="form1" :model="formItem" :rules="formItemRules" :label-width="100">
           <FormItem label="服务名称" prop="serviceId">
-            <Select :disabled="formItem.apiId && formItem.isPersist === 1?true:false" v-model="formItem.serviceId" filterable clearable>
+            <Select :disabled="formItem.apiId && formItem.isPersist === 1?true:false" v-model="formItem.serviceId"
+                    filterable clearable>
               <Option v-for="item in selectServiceList" :value="item.serviceId">{{ item.serviceName }}</Option>
             </Select>
           </FormItem>
@@ -92,25 +135,28 @@
             <Input v-model="formItem.apiCategory" placeholder="请输入内容"></Input>
           </FormItem>
           <FormItem label="接口标识" prop="apiCode">
-            <Input :disabled="formItem.apiId && formItem.isPersist === 1?true:false" v-model="formItem.apiCode" placeholder="请输入内容"></Input>
+            <Input :disabled="formItem.apiId && formItem.isPersist === 1?true:false" v-model="formItem.apiCode"
+                   placeholder="请输入内容"></Input>
           </FormItem>
           <FormItem label="接口名称" prop="apiName">
-            <Input :disabled="formItem.apiId && formItem.isPersist === 1?true:false" v-model="formItem.apiName" placeholder="请输入内容"></Input>
+            <Input :disabled="formItem.apiId && formItem.isPersist === 1?true:false" v-model="formItem.apiName"
+                   placeholder="请输入内容"></Input>
           </FormItem>
           <FormItem label="请求地址" prop="path">
-            <Input :disabled="formItem.apiId && formItem.isPersist === 1?true:false" v-model="formItem.path" placeholder="请输入内容"></Input>
+            <Input :disabled="formItem.apiId && formItem.isPersist === 1?true:false" v-model="formItem.path"
+                   placeholder="请输入内容"></Input>
           </FormItem>
           <FormItem label="优先级">
             <InputNumber v-model="formItem.priority"></InputNumber>
           </FormItem>
           <FormItem label="身份认证">
-            <RadioGroup  v-model="formItem.isAuth">
+            <RadioGroup v-model="formItem.isAuth">
               <Radio :disabled="formItem.apiId && formItem.isPersist === 1?true:false" label="0">否</Radio>
               <Radio :disabled="formItem.apiId && formItem.isPersist === 1?true:false" label="1">是</Radio>
             </RadioGroup>
           </FormItem>
           <FormItem label="公开访问">
-            <RadioGroup  v-model="formItem.isOpen">
+            <RadioGroup v-model="formItem.isOpen">
               <Radio label="0">否</Radio>
               <Radio label="1">是</Radio>
             </RadioGroup>
@@ -141,7 +187,16 @@
 
 <script>
   import {listConvertTree} from '@/libs/util'
-  import {getApis, updateApi, addApi, removeApi} from '@/api/api'
+  import {
+    getApis,
+    updateApi,
+    addApi,
+    removeApi,
+    batchRemoveApi,
+    batchUpdateOpenApi,
+    batchUpdateStatusApi,
+    batchUpdateAuthApi
+  } from '@/api/api'
   import {getServiceList} from '@/api/gateway'
 
   export default {
@@ -162,6 +217,7 @@
         modalVisible: false,
         modalTitle: '',
         saving: false,
+        tableSelection: [],
         pageInfo: {
           total: 0,
           page: 1,
@@ -202,7 +258,7 @@
           serviceId: '',
           priority: 0,
           apiDesc: '',
-          isOpen:1
+          isOpen: 1
         },
         columns: [
           {
@@ -304,7 +360,7 @@
           serviceId: '',
           priority: 0,
           apiDesc: '',
-          isOpen:1
+          isOpen: 1
         }
         this.formItem = newData
         //重置验证
@@ -355,6 +411,7 @@
         })
       },
       handleSearch (page) {
+        this.tableSelection = []
         if (page) {
           this.pageInfo.page = page
         }
@@ -380,6 +437,90 @@
             this.selectServiceList = res.data
           }
         })
+      },
+      handleTableSelectChange(selection){
+        this.tableSelection = selection
+      },
+      handleBatchClick(name){
+        if (name) {
+          this.$Modal.confirm({
+            title: `已勾选${this.tableSelection.length}项,是否继续执行操作？`,
+            onOk: () => {
+              let ids = []
+              this.tableSelection.map(item => {
+                if (!ids.includes(item.apiId)) {
+                  ids.push(item.apiId)
+                }
+              })
+              switch (name) {
+                case'remove':
+                  batchRemoveApi(ids).then(res => {
+                    if (res.code === 0) {
+                      this.$Message.success('批量操作成功')
+                    }
+                    this.handleSearch()
+                  })
+                  break
+                case'open1':
+                  batchUpdateOpenApi({ids: ids, open: 1}).then(res => {
+                    if (res.code === 0) {
+                      this.$Message.success('批量操作成功')
+                    }
+                    this.handleSearch()
+                  })
+                  break
+                case'open2':
+                  batchUpdateOpenApi({ids: ids, open: 2}).then(res => {
+                    if (res.code === 0) {
+                      this.$Message.success('批量操作成功')
+                    }
+                    this.handleSearch()
+                  })
+                  break
+                case'status1':
+                  batchUpdateStatusApi({ids: ids, status: 1}).then(res => {
+                    if (res.code === 0) {
+                      this.$Message.success('批量操作成功')
+                    }
+                    this.handleSearch()
+                  })
+                  break
+                case'status2':
+                  batchUpdateStatusApi({ids: ids, status: 0}).then(res => {
+                    if (res.code === 0) {
+                      this.$Message.success('批量操作成功')
+                    }
+                    this.handleSearch()
+                  })
+                  break
+                case'status3':
+                  batchUpdateStatusApi({ids: ids, status: 2}).then(res => {
+                    if (res.code === 0) {
+                      this.$Message.success('批量操作成功')
+                    }
+                    this.handleSearch()
+                  })
+                  break
+                case'auth1':
+                  batchUpdateAuthApi({ids: ids, auth: 1}).then(res => {
+                    if (res.code === 0) {
+                      this.$Message.success('批量操作成功')
+                    }
+                    this.handleSearch()
+                  })
+                  break
+                case'auth2':
+                  batchUpdateAuthApi({ids: ids, auth: 0}).then(res => {
+                    if (res.code === 0) {
+                      this.$Message.success('批量操作成功')
+                    }
+                    this.handleSearch()
+                  })
+                  break
+              }
+            }
+          })
+        }
       }
     },
     mounted: function () {

@@ -2,7 +2,9 @@
   <div>
     <div class="search-con search-con-top">
       <ButtonGroup>
-        <Button :disabled="value.menuId && value.menuId!=='0' && !value.hasChild && hasAuthority('systemMenuEdit')?false:true" class="search-btn" type="primary" @click="handleModal()">
+        <Button
+          :disabled="value.menuId && value.menuId!=='0' && !value.hasChild && hasAuthority('systemMenuEdit')?false:true"
+          class="search-btn" type="primary" @click="handleModal()">
           <span>添加功能按钮</span>
         </Button>
       </ButtonGroup>
@@ -14,9 +16,9 @@
         <span>{{row.actionName}}</span>
       </template>
       <template slot="action" slot-scope="{ row }">
-        <a  :disabled="hasAuthority('systemMenuEdit')?false:true" @click="handleModal(row)">编辑</a> &nbsp;
-        <a  :disabled="hasAuthority('systemMenuEdit')?false:true" @click="handleModal(row,forms[1])">接口授权</a> &nbsp;
-        <a  :disabled="hasAuthority('systemMenuEdit')?false:true" @click="handleRemove(row)">删除</a>
+        <a :disabled="hasAuthority('systemMenuEdit')?false:true" @click="handleModal(row)">编辑</a> &nbsp;
+        <a :disabled="hasAuthority('systemMenuEdit')?false:true" @click="handleModal(row,forms[1])">接口授权</a> &nbsp;
+        <a :disabled="hasAuthority('systemMenuEdit')?false:true" @click="handleRemove(row)">删除</a>
       </template>
     </Table>
     <Modal v-model="modalVisible"
@@ -32,7 +34,7 @@
             <Input disabled v-model="value.menuName"></Input>
           </FormItem>
           <FormItem label="功能标识" prop="actionCode">
-            <Input v-model="formItem.actionCode"  placeholder="请输入内容"></Input>
+            <Input v-model="formItem.actionCode" placeholder="请输入内容"></Input>
             <span>菜单标识+自定义标识.默认后缀：View、Edit</span>
           </FormItem>
           <FormItem label="功能名称" prop="actionName">
@@ -51,11 +53,11 @@
             <Input v-model="formItem.actionDesc" type="textarea" placeholder="请输入内容"></Input>
           </FormItem>
         </Form>
-        <Form ref="form2" v-show="current=='form2'" :model="formItem" :rules="formItemRules" >
+        <Form ref="form2" v-show="current=='form2'" :model="formItem" :rules="formItemRules">
           <Alert type="warning" show-icon>请注意：某一功能可能涉及到很多请求,需绑定相关接口资源,请求服务器时将验证接口访问权限！
           <a>支持动态授权</a>
           </Alert>
-          <FormItem  prop="authorities">
+          <FormItem prop="authorities">
             <Transfer
               :data="selectApis"
               :list-style="{width: '45%',height: '480px'}"
@@ -84,9 +86,9 @@
     removeAction,
   } from '@/api/action'
   import {
-      getAuthorityApi,
-      getAuthorityAction,
-      grantAuthorityAction
+    getAuthorityApi,
+    getAuthorityAction,
+    grantAuthorityAction
   } from '@/api/authority'
 
   export default {
@@ -166,7 +168,7 @@
         if (step === this.forms[0]) {
           this.modalTitle = data ? '编辑功能 - ' + this.value.menuName + ' > ' + data.actionName : '添加功能 - ' + this.value.menuName
           this.modalVisible = true
-          this.formItem.actionCode =  this.formItem.actionId ?this.formItem.actionCode:this.value.menuCode
+          this.formItem.actionCode = this.formItem.actionId ? this.formItem.actionCode : this.value.menuCode
         }
         if (step === this.forms[1]) {
           this.modalTitle = data ? '接口授权 - ' + this.value.menuName + ' > ' + data.actionName : '接口授权'
@@ -227,7 +229,10 @@
           this.$refs[this.current].validate((valid) => {
             if (valid) {
               this.saving = true
-              grantAuthorityAction({actionId: this.formItem.actionId, authorityIds: this.formItem.authorityIds}).then(res => {
+              grantAuthorityAction({
+                actionId: this.formItem.actionId,
+                authorityIds: this.formItem.authorityIds
+              }).then(res => {
                 this.handleReset()
                 this.handleSearch()
                 if (res.code === 0) {
@@ -280,7 +285,7 @@
           if (res1.code === 0) {
             res1.data.map(item => {
               item.key = item.authorityId
-              item.label = `${item.prefix.replace('/**','')}${item.path} - ${item.apiName}`
+              item.label = `${item.prefix.replace('/**', '')}${item.path} - ${item.apiName}`
               item.disabled = item.path === '/**'
             })
             that.selectApis = res1.data
@@ -288,9 +293,9 @@
           if (res2.code === 0) {
             const result = []
             res2.data.map(item => {
-               if(!result.includes(item.authorityId)){
-                 result.push(item.authorityId)
-               }
+              if (!result.includes(item.authorityId)) {
+                result.push(item.authorityId)
+              }
             })
             that.formItem.authorityIds = result
           }

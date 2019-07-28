@@ -43,6 +43,7 @@
         <Badge v-if="currentRow.result===1" status="success"/>
         <Badge v-else="" status="error"/>
         {{currentRow.url}}
+
       </div>
       <div>
         <h3>执行参数</h3>
@@ -102,7 +103,7 @@
           {
             title: '重试次数',
             key: 'retryNums',
-            width:100
+            width: 100
           },
           {
             title: '通知次数',
@@ -113,7 +114,7 @@
             title: '当前重试时间',
             key: 'delay',
             render: (h, params) => {
-              return h('div', (params.row.delay ? params.row.delay/1000 : 0) + ' s')
+              return h('div', (params.row.delay ? params.row.delay / 1000 : 0) + ' s')
             },
             width: 200
           },
