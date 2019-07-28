@@ -20,7 +20,7 @@
         </FormItem>
       </Form>
 
-      <Table :columns="columns" :data="data" :loading="loading">
+      <Table border :columns="columns" :data="data" :loading="loading">
         <template slot="httpStatus" slot-scope="{ row }">
           <Badge v-if="row.httpStatus==='200'" status="success"/>
           <Badge v-else="" status="error"/>
@@ -45,11 +45,11 @@
       <div>
         <h3>请求头</h3>
         <pre>
-             {{ currentRow.headers ? JSON.stringify(JSON.parse(currentRow.headers), null, 2) : ''}}
+             {{ currentRow.headers ? JSON.stringify(JSON.parse(currentRow.headers), null, 4) : ''}}
         </pre>
         <h3>请求参数</h3>
         <pre>
-              {{ currentRow.params ? JSON.stringify(JSON.parse(currentRow.params), null, 2) : ''}}
+              {{ currentRow.params ? JSON.stringify(JSON.parse(currentRow.params), null, 4) : ''}}
         </pre>
         <h3>错误信息</h3>
         <pre>
@@ -57,7 +57,7 @@
         </pre>
         <h3>认证信息</h3>
         <pre>
-              {{ currentRow.authentication ? JSON.stringify(JSON.parse(currentRow.authentication), null, 2) : ''}}
+              {{ currentRow.authentication ? JSON.stringify(JSON.parse(currentRow.authentication), null, 4) : ''}}
         </pre>
       </div>
     </Drawer>

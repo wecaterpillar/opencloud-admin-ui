@@ -14,10 +14,15 @@
         </FormItem>
       </Form>
 
-      <Table :columns="columns" :data="data" :loading="loading">
+      <Table border :columns="columns" :data="data" :loading="loading">
         <template slot="status" slot-scope="{ row }">
           <Badge v-if="row.status===1" status="success" text="成功"/>
           <Badge v-else="" status="error" text="失败"/>
+        </template>
+        <template slot="type" slot-scope="{ row }">
+          <p>触发器：{{row.triggerClass}}</p>
+          <p v-if="row.cronExpression">cron表达式:{{row.cronExpression}}</p>
+          <p v-else="">调度时间:{{row.startDate}} ~ {{row.endDate}}</p>
         </template>
         <template slot="detail" slot-scope="{ row }">
           <a @click="openDrawer(row)">详情</a>
@@ -35,11 +40,16 @@
         {{currentRow.jobName}}
       </div>
       <div>
-        <h3>执行参数：{{ currentRow.jobClass }}</h3>
+       <p><strong>执行类：</strong>{{ currentRow.jobClass }}</p>
+       <p><strong>触发器：</strong>{{currentRow.triggerClass}}</p>
+        <p><strong>运行时长：</strong>{{ currentRow.runTime }} ms  </p>
+       <p v-if="currentRow.cronExpression"><strong>cron表达式：</strong>{{currentRow.cronExpression}}</p>
+       <p v-else=""><strong>调度时间：</strong>: {{currentRow.startDate}} ~ {{currentRow.endDate}}</p>
+        <strong>执行参数</strong>
         <pre>
-              {{ currentRow.jobData ? JSON.stringify(JSON.parse(currentRow.jobData), null, 2) : ''}}
+              {{ currentRow.jobData ? JSON.stringify(JSON.parse(currentRow.jobData), null, 4) : ''}}
         </pre>
-        <h3>错误信息</h3>
+        <strong>错误信息</strong>
         <pre>
           {{currentRow.exception}}
         </pre>
@@ -66,44 +76,29 @@
         },
         columns: [
           {
-            type: 'selection',
-            width: 60,
-            align: 'center'
-          },
-          {
             title: '任务名称',
             key: 'jobName',
             width: 150
           },
           {
-            title: '任务分组',
-            key: 'jobGroup',
-            width: 150
+            title: '触发器',
+            width: 350,
+            slot:'type'
           },
           {
-            title: '任务类名',
+            title: '执行类',
             key: 'jobClass',
             width: 350
           },
           {
-            title: 'cron表达式',
-            key: 'cronExpression',
-            width: 150
-          },
-          {
-            title: '响应状态',
+            title: '执行结果',
             key: 'status',
             slot: 'status',
             width: 100
           },
           {
-            title: '执行时间',
-            key: 'startTime',
-            width: 200
-          },
-          {
             title: '耗时',
-            key: 'useTime',
+            key: 'runTime',
             render: (h, params) => {
               return h('div', (params.row.runTime ? params.row.runTime : 0) + ' ms')
             },

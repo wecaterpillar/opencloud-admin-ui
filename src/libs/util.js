@@ -529,6 +529,12 @@ export const filterRouter = (array, access, routers) => {
             }
           }
         }
+        // 多级菜单
+        if(hasChild(item)){
+          router.component = (resolve) => {
+            require(['_c/parent-view'], resolve)
+          }
+        }
       }
       if (hasChild(item)) {
         router.children.push(...filterRouter(item.children, access, []))

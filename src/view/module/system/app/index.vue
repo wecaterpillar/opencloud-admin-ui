@@ -26,7 +26,7 @@
           </Button>
         </ButtonGroup>
       </div>
-      <Table :columns="columns" :data="data" :loading="loading">
+      <Table border :columns="columns" :data="data" :loading="loading">
         <template slot="status" slot-scope="{ row }">
           <Badge v-if="row.status===1" status="success" text="上线"/>
           <Badge v-else="" status="error" text="下线"/>
@@ -186,7 +186,7 @@
                 </CheckboxGroup>
               </FormItem>
               <FormItem label="令牌有效期" prop="accessTokenValidity">
-                <RadioGroup v-model="formItem.tokenValidity">
+                <RadioGroup v-model="formItem.tokenValidity" type="button">
                   <Radio label="1">设置有效期</Radio>
                   <Radio label="0">不限制</Radio>
                 </RadioGroup>
@@ -467,18 +467,20 @@
         //重置验证
         const newData = {
           appId: '',
-          secretKey: '',
           apiKey: '',
+          secretKey: '',
           appName: '',
           appNameEn: '',
           appType: 'server',
           appIcon: '',
           appOs: '',
+          path: '',
           website: '',
           appDesc: '',
           status: 1,
+          redirectUrls: '',
           developerId: '',
-          scopes: [''],
+          scopes: ['userProfile'],
           autoApproveScopes: [],
           authorities: [],
           grantTypes: [],

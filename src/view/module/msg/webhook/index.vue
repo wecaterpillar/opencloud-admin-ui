@@ -24,7 +24,7 @@
         </FormItem>
       </Form>
 
-      <Table :columns="columns" :data="data" :loading="loading">
+      <Table border :columns="columns" :data="data" :loading="loading">
         <template slot="status" slot-scope="{ row }">
           <Badge v-if="row.result===1" status="success" text="成功"/>
           <Badge v-else="" status="error" text="失败"/>

@@ -32,7 +32,7 @@
       <Alert show-icon>
         <span>自动扫描<code>@EnableResourceServer</code>资源服务器接口信息,注:自动添加的接口,都是未公开的. <code>只有公开的接口,才可以通过网关访问。否则将提示:"请求地址,拒绝访问!"</code></span>
       </Alert>
-      <Table :columns="columns" :data="data" :loading="loading">
+      <Table border :columns="columns" :data="data" :loading="loading">
         <template slot="apiName" slot-scope="{ row }">
           <span>{{row.apiName}}</span>
         </template>

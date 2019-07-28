@@ -19,15 +19,19 @@ module.exports = {
    * 需要将它改为'/my-app/'
    */
   publicPath: {
-    dev: '/',      //  本地环境发布目录
-    pro: '/'  //  生产环境发布目录
+    //  本地环境发布目录
+    dev: '/',
+    //  生产环境发布目录
+    pro: '/'
   },
   /**
    *  api请求基础路径
    */
   apiUrl: {
-    dev: 'http://localhost:8888', //  本地环境接口请求地址
-    pro: 'http://api.openc.top'  //  生产环境接口请求地址
+    //  本地环境接口请求地址
+    dev: 'http://localhost:8888',
+    //  生产环境接口请求地址
+    pro: 'http://api.openc.top'
   },
   /**
    * 默认打开的首页的路由name值，默认为home

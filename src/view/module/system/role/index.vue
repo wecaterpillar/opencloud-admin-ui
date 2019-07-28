@@ -23,7 +23,7 @@
           </Button>
         </ButtonGroup>
       </div>
-      <Table :columns="columns" :data="data" :loading="loading">
+      <Table border :columns="columns" :data="data" :loading="loading">
         <template slot="status" slot-scope="{ row }">
           <Badge v-if="row.status===1" status="success" text="启用"/>
           <Badge v-else="" status="error" text="禁用"/>

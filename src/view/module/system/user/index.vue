@@ -29,7 +29,7 @@
         </ButtonGroup>
       </div>
 
-      <Table :columns="columns" :data="data" :loading="loading" >
+      <Table border :columns="columns" :data="data" :loading="loading" >
         <template slot="status" slot-scope="{ row }">
           <Badge v-if="row.status===1" status="success" text="正常"/>
           <Badge v-else-if="row.status===2" status="warning" text="锁定"/>
@@ -106,7 +106,7 @@
               </FormItem>
             </Form>
           </TabPane>
-          <TabPane :disabled="!formItem.userId" label="分配权限" name="form3">
+          <TabPane :disabled="!formItem.userId" label="分配个人权限" name="form3">
             <Form v-show="current == 'form3'" ref="form3" :model="formItem" :rules="formItemRules" :label-width="100">
               <FormItem label="过期时间(选填)" prop="expireTime">
                 <Badge v-if="formItem.isExpired" text="授权已过期">
@@ -321,7 +321,7 @@
           },
           {
             title: '注册时间',
-            key: 'registerTime',
+            key: 'createTime',
             width: 180
           },
           {

@@ -132,7 +132,7 @@
               <div id="search1"></div>
             </Col>
           </Row>
-          <Table border :columns="columns5" :data="data5"></Table>
+          <Table border border :columns="columns5" :data="data5"></Table>
           <div class="pageContent">
             <Page :total="100"/>
           </div>

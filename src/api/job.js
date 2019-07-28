@@ -41,17 +41,7 @@ export const getJobs = ({page, limit}) => {
  * @param isOpen
  * @param isAuth
  */
-export const addHttpJob = ({jobName, jobDescription, cron, serviceId, path, method, contentType, alarmMail}) => {
-  const data = {
-    jobName: jobName,
-    jobDescription: jobDescription,
-    cron: cron,
-    serviceId: serviceId,
-    path: path,
-    method: method,
-    contentType: contentType,
-    alarmMail: alarmMail
-  }
+export const addHttpJob = (data) => {
   return request({
     url: 'task/job/add/http',
     data,
@@ -73,17 +63,7 @@ export const addHttpJob = ({jobName, jobDescription, cron, serviceId, path, meth
  * @param isOpen
  * @param isAuth
  */
-export const updateHttpJob = ({jobName, jobDescription, cron, serviceId, path, method, contentType, alarmMail}) => {
-  const data = {
-    jobName: jobName,
-    jobDescription: jobDescription,
-    cron: cron,
-    serviceId: serviceId,
-    path: path,
-    method: method,
-    contentType: contentType,
-    alarmMail: alarmMail
-  }
+export const updateHttpJob = (data) => {
   return request({
     url: 'task/job/update/http',
     data,

@@ -7,7 +7,7 @@
         </Button>
       </ButtonGroup>
     </div>
-    <Table :columns="columns" :data="data" :loading="loading">
+    <Table border :columns="columns" :data="data" :loading="loading">
       <template slot="status" slot-scope="{ row }">
         <Badge v-if="row.status===1" status="success"/>
         <Badge v-else="" status="error"/>
