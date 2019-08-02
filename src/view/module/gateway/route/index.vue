@@ -69,19 +69,19 @@
             <Input v-model="formItem.url" placeholder="http://localhost:8080"></Input>
           </FormItem>
           <FormItem label="忽略前缀">
-            <RadioGroup v-model="formItem.stripPrefix">
+            <RadioGroup v-model="formItem.stripPrefix" type="button">
               <Radio label="0">否</Radio>
               <Radio label="1">是</Radio>
             </RadioGroup>
           </FormItem>
           <FormItem label="失败重试">
-            <RadioGroup v-model="formItem.retryable">
+            <RadioGroup v-model="formItem.retryable" type="button">
               <Radio label="0">否</Radio>
               <Radio label="1">是</Radio>
             </RadioGroup>
           </FormItem>
           <FormItem label="状态">
-            <RadioGroup v-model="formItem.status">
+            <RadioGroup v-model="formItem.status" type="button">
               <Radio label="0">禁用</Radio>
               <Radio label="1">启用</Radio>
             </RadioGroup>

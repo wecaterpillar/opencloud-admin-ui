@@ -134,7 +134,7 @@
           {
             title: '策略名称',
             key: 'policyName',
-            width: 350
+            width: 200
           },
           {
             title: '策略类型',
@@ -159,15 +159,14 @@
               }
             }
           },
-
-          {
-            title: 'IP地址/域名',
-            key: 'ipAddress',
-            width: 550
-          },
           {
             title: '最后修改时间',
-            key: 'updateTime'
+            key: 'updateTime',
+            width: 180
+          },
+          {
+            title: 'IP地址/域名',
+            key: 'ipAddress'
           },
           {
             title: '操作',

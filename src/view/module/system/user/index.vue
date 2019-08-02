@@ -86,7 +86,7 @@
                 <Input v-model="formItem.mobile" placeholder="请输入内容"></Input>
               </FormItem>
               <FormItem label="状态">
-                <RadioGroup v-model="formItem.status">
+                <RadioGroup v-model="formItem.status" type="button">
                   <Radio label="0">禁用</Radio>
                   <Radio label="1">正常</Radio>
                   <Radio label="2">锁定</Radio>
@@ -106,17 +106,18 @@
               </FormItem>
             </Form>
           </TabPane>
-          <TabPane :disabled="!formItem.userId" label="分配个人权限" name="form3">
+          <TabPane :disabled="!formItem.userId" label="分配权限" name="form3">
+            <Alert type="info" show-icon>
+              支持用户单独分配功能权限<code>(除角色已经分配菜单功能,禁止勾选!)</code></Alert>
             <Form v-show="current == 'form3'" ref="form3" :model="formItem" :rules="formItemRules" :label-width="100">
-              <FormItem label="过期时间(选填)" prop="expireTime">
+              <FormItem label="过期时间" prop="expireTime">
                 <Badge v-if="formItem.isExpired" text="授权已过期">
                   <DatePicker v-model="formItem.expireTime" class="ivu-form-item-error" type="datetime"
                               placeholder="设置有效期"></DatePicker>
                 </Badge>
                 <DatePicker v-else="" v-model="formItem.expireTime" type="datetime" placeholder="设置有效期"></DatePicker>
               </FormItem>
-              <FormItem label="功能菜单(选填)" prop="grantMenus">
-                <Alert type="warning" show-icon>请注意：用户可以分配除所属角色下以外的菜单功能！ 可以判断 owner='role' 禁止勾选,这里的插件有问题没法做到！</Alert>
+              <FormItem label="功能菜单" prop="grantMenus">
                 <tree-table
                   ref="tree"
                   style="max-height:450px;overflow: auto"
@@ -129,7 +130,7 @@
                   :data="selectMenus">
                   <template slot="operation" slot-scope="scope">
                     <CheckboxGroup v-model="formItem.grantActions">
-                      <Checkbox v-for="item in scope.row.actionList" :label="item.authorityId">
+                      <Checkbox :disabled="item.disabled" v-for="item in scope.row.actionList" :label="item.authorityId">
                         <span :title="item.actionDesc">{{item.actionName}}</span>
                       </Checkbox>
                     </CheckboxGroup>
@@ -342,7 +343,7 @@
             minWidth: '250px',
           },
           {
-            title: '功能',
+            title: '操作',
             type: 'template',
             template: 'operation',
             minWidth: '200px'
@@ -365,7 +366,7 @@
           this.handleLoadRoles(this.formItem.userId)
         }
         if (this.current === this.forms[2]) {
-          this.modalTitle = data ? '分配私人菜单 - ' + data.userName : '分配私人菜单'
+          this.modalTitle = data ? '分配权限 - ' + data.userName : '分配权限'
           this.handleLoadUserGranted(this.formItem.userId)
         }
         if (this.current === this.forms[3]) {
@@ -517,6 +518,7 @@
         const that = this
         const p1 = getAuthorityMenu()
         const p2 = getAuthorityUser(userId)
+        const roleAuthorites = []
         Promise.all([p1, p2]).then(function (values) {
           let res1 = values[0]
           let res2 = values[1]
@@ -530,6 +532,9 @@
               let menus = []
               let actions = []
               res2.data.map(item => {
+                if(item.owner === 'role'){
+                  roleAuthorites.push(item.authorityId);
+                }
                 // 菜单权限
                 if (item.authority.indexOf('MENU_') != -1 && !menus.includes(item.authorityId)) {
                   menus.push(item.authorityId)
@@ -551,7 +556,20 @@
               // 菜单选中
               if (that.formItem.grantMenus.includes(item.authorityId)) {
                 item._isChecked = true
+                // 归属角色权限,禁止授权
+                if(roleAuthorites.includes(item.authorityId)){
+                    // 插件不支持,禁用
+                  item.disabled = true
+                  item.menuName += ' (禁止勾选)'
+                }
               }
+
+             // 功能权限
+              item.actionList.map(action => {
+                if(roleAuthorites.includes(action.authorityId)){
+                  action.disabled = true
+                }
+              })
             })
             that.selectMenus = listConvertTree(res1.data, opt)
           }

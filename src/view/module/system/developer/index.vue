@@ -86,7 +86,7 @@
                 <Input v-model="formItem.mobile" placeholder="请输入内容"></Input>
               </FormItem>
               <FormItem label="状态">
-                <RadioGroup v-model="formItem.status">
+                <RadioGroup v-model="formItem.status" type="button">
                   <Radio label="0">禁用</Radio>
                   <Radio label="1">正常</Radio>
                   <Radio label="2">锁定</Radio>

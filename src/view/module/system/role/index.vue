@@ -64,7 +64,7 @@
                 <Input v-model="formItem.roleName" placeholder="请输入内容"></Input>
               </FormItem>
               <FormItem label="状态">
-                <RadioGroup v-model="formItem.status">
+                <RadioGroup v-model="formItem.status" type="button">
                   <Radio label="0">禁用</Radio>
                   <Radio label="1">启用</Radio>
                 </RadioGroup>
@@ -76,14 +76,14 @@
           </TabPane>
           <TabPane :disabled="!formItem.roleId" label="分配权限" name="form2">
             <Form v-show="current == 'form2'" ref="form2" :model="formItem" :rules="formItemRules" :label-width="100">
-              <FormItem label="过期时间(选填)" prop="expireTime">
+              <FormItem label="过期时间" prop="expireTime">
                 <Badge v-if="formItem.isExpired" text="授权已过期">
                   <DatePicker v-model="formItem.expireTime" class="ivu-form-item-error" type="datetime"
                               placeholder="设置有效期"></DatePicker>
                 </Badge>
                 <DatePicker v-else="" v-model="formItem.expireTime" type="datetime" placeholder="设置有效期"></DatePicker>
               </FormItem>
-              <FormItem label="功能菜单(选填)" prop="grantMenus">
+              <FormItem label="功能菜单" prop="grantMenus">
                 <tree-table
                   ref="tree"
                   style="max-height:480px;overflow: auto"
@@ -105,7 +105,7 @@
               </FormItem>
             </Form>
           </TabPane>
-          <TabPane :disabled="!formItem.roleId" label="添加成员" name="form3">
+          <TabPane :disabled="!formItem.roleId" label="角色成员" name="form3">
             <Form v-show="current == 'form3'" ref="form3" :model="formItem" :rules="formItemRules">
               <FormItem prop="authorities">
                 <Transfer
@@ -265,7 +265,7 @@
             minWidth: '250px',
           },
           {
-            title: '功能',
+            title: '操作',
             type: 'template',
             template: 'operation',
             minWidth: '200px'
@@ -280,7 +280,7 @@
           this.formItem = Object.assign({}, this.formItem, data)
         }
         if (this.current === this.forms[0]) {
-          this.modalTitle = data ? '编辑角色 - ' + data.roleName : '添加用户'
+          this.modalTitle = data ? '编辑角色 - ' + data.roleName : '添加角色'
           this.modalVisible = true
         }
         if (this.current === this.forms[1]) {
@@ -288,7 +288,7 @@
           this.handleLoadRoleGranted(this.formItem.roleId)
         }
         if (this.current === this.forms[2]) {
-          this.modalTitle = data ? '添加成员 - ' + data.roleName : '添加成员'
+          this.modalTitle = data ? '角色成员 - ' + data.roleName : '角色成员'
           this.handleLoadRoleUsers(this.formItem.roleId)
         }
         this.formItem.status = this.formItem.status + ''
