@@ -70,6 +70,9 @@ service.interceptors.response.use(
         case 502:
           message = '连接服务器失败'
           break
+        case 429:
+          message = '访问太过频繁，请稍后再试!'
+          break
         default:
           message = error.response.data.message ? error.response.data.message : '服务器错误'
           break

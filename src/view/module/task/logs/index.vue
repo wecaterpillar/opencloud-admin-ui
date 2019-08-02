@@ -20,7 +20,6 @@
           <Badge v-else="" status="error" text="失败"/>
         </template>
         <template slot="type" slot-scope="{ row }">
-          <p>触发器：{{row.triggerClass}}</p>
           <p v-if="row.cronExpression">cron表达式:{{row.cronExpression}}</p>
           <p v-else="">调度时间:{{row.startDate}} ~ {{row.endDate}}</p>
         </template>
@@ -82,28 +81,21 @@
             width: 150
           },
           {
-            title: '触发器',
+            title: '调度信息',
             width: 350,
             slot: 'type'
           },
           {
-            title: '执行类',
-            key: 'jobClass',
-            width: 350
-          },
-          {
             title: '执行结果',
             key: 'status',
-            slot: 'status',
-            width: 100
+            slot: 'status'
           },
           {
             title: '耗时',
             key: 'runTime',
             render: (h, params) => {
               return h('div', (params.row.runTime ? params.row.runTime : 0) + ' ms')
-            },
-            width: 100
+            }
           },
           {
             title: '创建时间',

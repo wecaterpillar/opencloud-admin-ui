@@ -15,7 +15,6 @@
           <Badge v-else="" status="error" text="暂停"/>
         </template>
         <template slot="type" slot-scope="{ row }">
-          <p>触发器：{{row.jobTrigger}}</p>
           <p v-if="row.cronExpression">cron表达式:{{row.cronExpression}}</p>
           <p v-else="">调度时间:{{row.startDate}} ~ {{row.endDate}}</p>
         </template>
@@ -174,25 +173,14 @@
             width: 200,
           },
           {
-            title: '任务触发器',
+            title: '调度信息',
             width: 350,
             slot: 'type'
           },
           {
-            title: '任务执行器',
-            key: 'jobClassName',
-            width: 200
-          },
-          {
             title: '状态',
             key: 'jobStatus',
-            slot: 'status',
-            width: 100
-          },
-          {
-            title: '任务参数',
-            key: 'data',
-            width: 300
+            slot: 'status'
           },
           {
             title: '任务描述',

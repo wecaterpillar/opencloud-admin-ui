@@ -64,7 +64,7 @@ export default {
             if (res.code === 0) {
               let token = res.data.access_token
               commit('setToken', { token, auto })
-              resolve()
+              resolve(res)
             }
           }
         }).catch(err => {
@@ -91,7 +91,7 @@ export default {
         getUserInfo().then(res => {
           if (res.code === 0) {
             commit('setAvatar', res.data.avatar)
-            commit('setUserName', res.data.userName)
+            commit('setUserName', res.data.username)
             commit('setNickName', res.data.nickName)
             commit('setUserId', res.data.userId)
             commit('setEmail', res.data.email)

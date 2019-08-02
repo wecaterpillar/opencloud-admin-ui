@@ -9,6 +9,7 @@
         </Button>
       </ButtonGroup>
     </div>
+    <Alert type="info" show-icon>请绑定相关接口资源。否则请求网关服务器将提示<code>"权限不足,拒绝访问!"</code></Alert>
     <Table border :columns="columns" :data="data" :loading="loading">
       <template slot="status" slot-scope="{ row }">
         <Badge v-if="row.status===1" status="success"/>
@@ -17,7 +18,7 @@
       </template>
       <template slot="action" slot-scope="{ row }">
         <a :disabled="hasAuthority('systemMenuEdit')?false:true" @click="handleModal(row)">编辑</a> &nbsp;
-        <a :disabled="hasAuthority('systemMenuEdit')?false:true" @click="handleModal(row,forms[1])">接口授权</a> &nbsp;
+        <a :disabled="hasAuthority('systemMenuEdit')?false:true" @click="handleModal(row,forms[1])">接口权限</a> &nbsp;
         <a :disabled="hasAuthority('systemMenuEdit')?false:true" @click="handleRemove(row)">删除</a>
       </template>
     </Table>
@@ -44,7 +45,7 @@
             <InputNumber v-model="formItem.priority"></InputNumber>
           </FormItem>
           <FormItem label="状态">
-            <RadioGroup v-model="formItem.status">
+            <RadioGroup v-model="formItem.status" type="button">
               <Radio label="0">禁用</Radio>
               <Radio label="1">启用</Radio>
             </RadioGroup>
@@ -54,9 +55,6 @@
           </FormItem>
         </Form>
         <Form ref="form2" v-show="current=='form2'" :model="formItem" :rules="formItemRules">
-          <Alert type="warning" show-icon>请注意：某一功能可能涉及到很多请求,需绑定相关接口资源,请求服务器时将验证接口访问权限！
-          <a>支持动态授权</a>
-          </Alert>
           <FormItem prop="authorities">
             <Transfer
               :data="selectApis"

@@ -27,8 +27,7 @@
             </Col>
             <Col span="8">
             <FormItem label="头像" prop="avatar">
-              <Avatar style="height: 128px;width: 128px;border-radius: 50%;"
-                      src="https://o5wwk8baw.qnssl.com/7eb99afb9d5f317c912f08b5212fd69a/avatar" size="large"/>
+              <Avatar style="height: 128px;width: 128px;border-radius: 50%;"/>
             </FormItem>
             </Col>
           </Row>

@@ -54,8 +54,8 @@
                 <Icon type="ios-arrow-forward"></Icon>
               </DropdownItem>
               <DropdownMenu slot="list">
-                <DropdownItem name="open1">公开的</DropdownItem>
-                <DropdownItem name="open2">内部的</DropdownItem>
+                <DropdownItem name="open1">允许公开访问</DropdownItem>
+                <DropdownItem name="open2">拒绝公开访问</DropdownItem>
               </DropdownMenu>
             </Dropdown>
             <Dropdown placement="right-start">
@@ -64,8 +64,8 @@
                 <Icon type="ios-arrow-forward"></Icon>
               </DropdownItem>
               <DropdownMenu slot="list">
-                <DropdownItem name="auth1">身份认证</DropdownItem>
-                <DropdownItem name="auth2">无需认证</DropdownItem>
+                <DropdownItem name="auth1">开启身份认证</DropdownItem>
+                <DropdownItem name="auth2">关闭身份认证</DropdownItem>
               </DropdownMenu>
             </Dropdown>
           </DropdownMenu>
@@ -79,10 +79,10 @@
           <span>{{row.apiName}}</span>
         </template>
         <template slot="isAuth" slot-scope="{ row }">
-          <Tag color="blue" v-if="row.isOpen===1">公开的</Tag>
-          <Tag v-else-if="row.isOpen!==1">内部的</Tag>
-          <Tag color="green" v-if="row.isAuth===1">身份认证</Tag>
-          <Tag v-else-if="row.isAuth!==1">无需认证</Tag>
+          <Tag color="green" v-if="row.isOpen===1">允许公开访问</Tag>
+          <Tag color="red" v-else-if="row.isOpen!==1">拒绝公开访问</Tag>
+          <Tag color="green" v-if="row.isAuth===1">开启身份认证</Tag>
+          <Tag color="red" v-else-if="row.isAuth!==1">关闭身份认证</Tag>
           <Tag v-if="row.status===1" color="green">启用</Tag>
           <Tag v-else-if="row.status===2" color="orange">维护中</Tag>
           <Tag v-else="" color="red">禁用</Tag>
@@ -134,7 +134,7 @@
           <FormItem label="接口分类" prop="apiCategory">
             <Input v-model="formItem.apiCategory" placeholder="请输入内容"></Input>
           </FormItem>
-          <FormItem label="接口标识" prop="apiCode">
+          <FormItem label="接口编码" prop="apiCode">
             <Input :disabled="formItem.apiId && formItem.isPersist === 1?true:false" v-model="formItem.apiCode"
                    placeholder="请输入内容"></Input>
           </FormItem>
@@ -150,26 +150,26 @@
             <InputNumber v-model="formItem.priority"></InputNumber>
           </FormItem>
           <FormItem label="身份认证">
-            <RadioGroup v-model="formItem.isAuth">
-              <Radio :disabled="formItem.apiId && formItem.isPersist === 1?true:false" label="0">否</Radio>
-              <Radio :disabled="formItem.apiId && formItem.isPersist === 1?true:false" label="1">是</Radio>
+            <RadioGroup v-model="formItem.isAuth" type="button">
+              <Radio :disabled="formItem.apiId && formItem.isPersist === 1?true:false" label="0">关闭</Radio>
+              <Radio :disabled="formItem.apiId && formItem.isPersist === 1?true:false" label="1">开启</Radio>
             </RadioGroup>
+            <p><code>开启：未认证登录,提示"认证失败,请重新登录!";关闭: 不需要认证登录</code></p>
           </FormItem>
           <FormItem label="公开访问">
-            <RadioGroup v-model="formItem.isOpen">
-              <Radio label="0">否</Radio>
-              <Radio label="1">是</Radio>
+            <RadioGroup v-model="formItem.isOpen" type="button">
+              <Radio label="0">拒绝</Radio>
+              <Radio label="1">允许</Radio>
             </RadioGroup>
-            <Tooltip content="接口是否可以通过网关访问">
-              <Icon type="ios-alert" size="16"/>
-            </Tooltip>
+           <p><code>拒绝:提示"请求地址,拒绝访问!"</code></p>
           </FormItem>
           <FormItem label="状态">
-            <RadioGroup v-model="formItem.status">
+            <RadioGroup v-model="formItem.status" type="button">
               <Radio label="0">禁用</Radio>
               <Radio label="1">启用</Radio>
               <Radio label="2">维护中</Radio>
             </RadioGroup>
+            <p><code>禁用：提示"请求地址,禁止访问!";维护中：提示"正在升级维护中,请稍后再试!";</code></p>
           </FormItem>
           <FormItem label="描述">
             <Input v-model="formItem.apiDesc" type="textarea" placeholder="请输入内容"></Input>
@@ -267,10 +267,15 @@
             align: 'center'
           },
           {
+            title: 'md5编码',
+            key: 'apiCode',
+            width: 300,
+          },
+          {
             title: '名称',
             key: 'apiName',
             slot: 'apiName',
-            width: 200,
+            width: 300,
             filters: [
               {
                 label: '禁用',
@@ -309,12 +314,12 @@
             title: '接口安全',
             key: 'isAuth',
             slot: 'isAuth',
-            width: 250
+            width: 300
           },
           {
             title: '描述',
             key: 'apiDesc',
-            width: 400
+            width: 200
           },
           {
             title: '最后更新时间',

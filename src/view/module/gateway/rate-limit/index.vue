@@ -57,6 +57,7 @@
             </Form>
           </TabPane>
           <TabPane :disabled="!formItem.policyId" label="绑定接口" name="form2">
+            <Alert type="warning" show-icon>请注意：如果API上原来已经绑定了一个策略，则会被本策略覆盖，请慎重选择！</Alert>
             <Form ref="form2" v-show="current=='form2'" :model="formItem" :rules="formItemRules">
               <FormItem prop="authorities">
                 <Transfer

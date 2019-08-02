@@ -77,7 +77,7 @@
             </Select>
             <Select v-model="formItem.target" slot="append" style="width: 100px">
               <Option value="_self">窗口内打开</Option>
-              <Option value="_blank">新窗口打开</Option>
+              <Option :disabled="formItem.scheme==='/'" value="_blank">新窗口打开</Option>
             </Select>
             </Input>
             <span v-if="formItem.scheme === '/'">前端组件：/view/module/{{formItem.path}}.vue</span>
@@ -85,8 +85,8 @@
           </FormItem>
           <FormItem label="图标">
             <Input v-model="formItem.icon" placeholder="请输入内容">
-            <Icon size="16" :type="formItem.icon" slot="prepend"/>
-            <Poptip width="600" slot="append" placement="left">
+            <Icon size="22" :type="formItem.icon" slot="prepend"/>
+            <Poptip width="600" slot="append" placement="bottom">
               <Button icon="ios-search"></Button>
               <div slot="content">
                 <ul class="icons">
@@ -103,7 +103,7 @@
             <InputNumber v-model="formItem.priority"></InputNumber>
           </FormItem>
           <FormItem label="状态">
-            <RadioGroup v-model="formItem.status">
+            <RadioGroup v-model="formItem.status" type="button">
               <Radio label="0">禁用</Radio>
               <Radio label="1">启用</Radio>
             </RadioGroup>

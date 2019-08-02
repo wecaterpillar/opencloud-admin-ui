@@ -27,6 +27,7 @@
           </Button>
         </ButtonGroup>
       </div>
+      <Alert type="info" show-icon>客户端模式,请授权相关接口资源。否则请求网关服务器将提示<code>"权限不足,拒绝访问!"</code></Alert>
       <Table border :columns="columns" :data="data" :loading="loading">
         <template slot="status" slot-scope="{ row }">
           <Badge v-if="row.status===1" status="success" text="上线"/>
@@ -139,7 +140,7 @@
                 <Input v-model="formItem.website" placeholder="请输入内容"></Input>
               </FormItem>
               <FormItem label="状态">
-                <RadioGroup v-model="formItem.status">
+                <RadioGroup v-model="formItem.status" type="button">
                   <Radio label="0">下线</Radio>
                   <Radio label="1">上线</Radio>
                 </RadioGroup>
@@ -206,17 +207,16 @@
               </FormItem>
             </Form>
           </TabPane>
-          <TabPane :disabled="!formItem.appId" label="功能授权" name="form3">
-            <Form ref="form3" v-show="current=='form3'" :model="formItem" :rules="formItemRules">
-              <FormItem prop="expireTime">
+          <TabPane :disabled="!formItem.appId" label="分配权限" name="form3">
+            <Form ref="form3" v-show="current=='form3'" :model="formItem"  :label-width="100" :rules="formItemRules">
+              <FormItem prop="expireTime" label="过期时间">
                 <Badge v-if="formItem.isExpired" text="授权已过期">
                   <DatePicker v-model="formItem.expireTime" class="ivu-form-item-error" type="datetime"
                               placeholder="授权有效期"></DatePicker>
                 </Badge>
                 <DatePicker v-else="" v-model="formItem.expireTime" type="datetime" placeholder="设置有效期"></DatePicker>
               </FormItem>
-              <FormItem prop="authorities">
-                <Alert show-icon>提示：支持动态授权,无需重新获取令牌或刷新令牌</Alert>
+              <FormItem prop="authorities" label="功能接口" >
                 <Transfer
                   :data="selectApis"
                   :list-style="{width: '45%',height: '480px'}"
@@ -456,7 +456,7 @@
           this.handleLoadAppClientInfo(this.formItem.apiKey)
         }
         if (this.current === this.forms[2]) {
-          this.modalTitle = data ? '功能授权 - ' + data.appName : '功能授权'
+          this.modalTitle = data ? '分配权限 - ' + data.appName : '分配权限'
           this.handleLoadAppGranted(this.formItem.appId)
         }
         this.formItem.status = this.formItem.status + ''
