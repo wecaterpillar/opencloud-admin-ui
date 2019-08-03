@@ -50,13 +50,6 @@
           </FormItem>
           <FormItem label="上级菜单" prop="parentId">
             <treeselect
-                    v-model="formItem.parentId"
-                    :options="selectTreeData"
-                    :default-expand-level="1"
-                    :normalizer="treeSelectNormalizer"/>
-          </FormItem>
-          <FormItem label="上级菜单" prop="parentId">
-            <treeselect
               v-model="formItem.parentId"
               :options="selectTreeData"
               :default-expand-level="1"
