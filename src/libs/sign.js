@@ -57,7 +57,7 @@ export const sign = (config, appId, appSecret, signType) => {
     keys = Object.keys(data)
   }
   //排序
-  let skeys = keys.sort()
+  const skeys = keys.sort()
   let str = ''
   skeys.filter(k => {
     return k !== _singKey && k !== _secretKey
