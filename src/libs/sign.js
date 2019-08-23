@@ -62,8 +62,9 @@ export const sign = (config, appId, appSecret, signType) => {
   skeys.filter(k => {
     return k !== _singKey && k !== _secretKey
   }).map(k => {
-    const v = data[k] ? data[k] : ''
-    if (v) {
+    const v = data[k]
+    if (v || v === 0) {
+      // 参数值为空，则不参与签名
       str = str + k + '=' + v + '&'
     }
   })
