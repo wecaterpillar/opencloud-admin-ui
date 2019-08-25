@@ -1,18 +1,19 @@
 import axios from 'axios'
 import qs from 'qs'
-import config from '@/config'
-import { getToken } from '@/libs/util'
-import { Message } from 'iview'
+import $config from '@/config'
+import {getToken} from '@/libs/util'
+import {Message} from 'iview'
+import {sign} from '@/libs/sign'
 
 let baseUrl = ''
 switch (process.env.NODE_ENV) {
   case 'development':
     // 这里是本地的请求url
-    baseUrl = config.apiUrl.dev
+    baseUrl = $config.apiUrl.dev
     break
   case 'production':
     // 生产环境url
-    baseUrl = config.apiUrl.pro
+    baseUrl = $config.apiUrl.pro
     break
 }
 
@@ -33,15 +34,17 @@ service.apiUrl = baseUrl
  * 请求参数处理
  */
 service.interceptors.request.use((config) => {
-  config.method === 'post'
-    ? config.data = qs.stringify({ ...config.data })
-    : config.params = { ...config.params }
-  const token = getToken()
-  if (token) {
-    config.headers['Authorization'] = 'Bearer ' + token
+    // 参数签名处理
+    config = sign(config, $config.appId, $config.appSecret, 'SHA256')
+    config.method === 'get'
+      ? config.params = {...config.params} : config.data = qs.stringify({...config.data})
+
+    const token = getToken()
+    if (token) {
+      config.headers['Authorization'] = 'Bearer ' + token
+    }
+    return config
   }
-  return config
-}
 )
 /**
  * 响应结果处理
@@ -54,7 +57,7 @@ service.interceptors.response.use(
       return Promise.resolve(response.data)
     } else {
       // 使用Promise.reject 响应
-      Message.error({ content: response.data.message })
+      Message.error({content: response.data.message})
       return Promise.reject(response.data)
     }
   }, error => {
@@ -67,9 +70,6 @@ service.interceptors.response.use(
         case 403:
           message = error.response.data.path + ',' + error.response.data.message
           break
-        case 502:
-          message = '连接服务器失败'
-          break
         case 429:
           message = '访问太过频繁，请稍后再试!'
           break
@@ -77,12 +77,12 @@ service.interceptors.response.use(
           message = error.response.data.message ? error.response.data.message : '服务器错误'
           break
       }
-      Message.error({ content: message })
+      Message.error({content: message})
       // 请求错误处理
       return Promise.reject(error)
     } else {
       message = '连接服务器失败'
-      Message.error({ content: message })
+      Message.error({content: message})
       return Promise.reject(error)
     }
   }

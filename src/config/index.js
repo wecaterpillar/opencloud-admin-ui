@@ -1,4 +1,7 @@
 module.exports = {
+  appId:'1552274783265',
+  appKey:'7gBZcbsC7kLIWCdELIl8nxcs',
+  appSecret:'0osTIhce7uPvDKHz6aa67bhCukaKoYl4',
   /**
    * token在Cookie中存储的天数，默认1天
    */
