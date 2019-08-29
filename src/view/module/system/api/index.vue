@@ -267,7 +267,7 @@
             align: 'center'
           },
           {
-            title: 'md5编码',
+            title: '编码',
             key: 'apiCode',
             width: 300,
           },

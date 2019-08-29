@@ -5,8 +5,8 @@
             :model="pageInfo"
             inline
             :label-width="80">
-        <FormItem label="AppId" prop="appId">
-          <Input type="text" v-model="pageInfo.appId" placeholder="请输入关键字"/>
+        <FormItem label="AppId" prop="aid">
+          <Input type="text" v-model="pageInfo.aid" placeholder="请输入关键字"/>
         </FormItem>
         <FormItem label="中文名称" prop="appName">
           <Input type="text" v-model="pageInfo.appName" placeholder="请输入关键字"/>
@@ -40,10 +40,10 @@
           <Tag color="blue" v-else="">手机网页应用</Tag>
         </template>
         <template slot="action" slot-scope="{ row }">
-          <a @click="handleModal(row)" :disabled="row.appId != 'gateway' && hasAuthority('systemAppEdit') ?false:true">
+          <a @click="handleModal(row)" :disabled="row.aid != 'gateway' && hasAuthority('systemAppEdit') ?false:true">
             编辑</a>&nbsp;
           <Dropdown v-show="hasAuthority('systemAppEdit')" transfer ref="dropdown" @on-click="handleClick($event,row)">
-            <a href="javascript:void(0)" :disabled="row.appId === 'gateway' ?true:false">
+            <a href="javascript:void(0)" :disabled="row.aid === 'gateway' ?true:false">
               <span>更多</span>
               <Icon type="ios-arrow-down"></Icon>
             </a>
@@ -100,7 +100,7 @@
                 </Upload>
               </FormItem>
               <FormItem label="AppId">
-                <Input disabled v-model="formItem.appId" placeholder="请输入内容"></Input>
+                <Input disabled v-model="formItem.aid" placeholder="请输入内容"></Input>
               </FormItem>
               <FormItem label="开发者">
                 <Select v-model="formItem.developerId" filterable clearable>
@@ -150,7 +150,7 @@
               </FormItem>
             </Form>
           </TabPane>
-          <TabPane :disabled="!formItem.appId" label="开发信息" name="form2">
+          <TabPane :disabled="!formItem.aid" label="开发信息" name="form2">
             <Form ref="form2" v-show="current=='form2'" :model="formItem" :rules="formItemRules" :label-width="135">
               <FormItem label="ApiKey">
                 <Input disabled v-model="formItem.apiKey" placeholder="请输入内容"></Input>
@@ -207,7 +207,7 @@
               </FormItem>
             </Form>
           </TabPane>
-          <TabPane :disabled="!formItem.appId" label="分配权限" name="form3">
+          <TabPane :disabled="!formItem.aid" label="分配权限" name="form3">
             <Form ref="form3" v-show="current=='form3'" :model="formItem"  :label-width="100" :rules="formItemRules">
               <FormItem prop="expireTime" label="过期时间">
                 <Badge v-if="formItem.isExpired" text="授权已过期">
@@ -289,7 +289,7 @@
           total: 0,
           page: 1,
           limit: 10,
-          appId: '',
+          aid: '',
           appName: '',
           appNameEn: ''
         },
@@ -337,7 +337,7 @@
           ],
         },
         formItem: {
-          appId: '',
+          aid: '',
           apiKey: '',
           secretKey: '',
           appName: '',
@@ -446,6 +446,7 @@
       handleModal (data) {
         if (data) {
           this.formItem = Object.assign({}, this.formItem, data)
+          this.formItem.aid = data.appId
         }
         if (this.current === this.forms[0]) {
           this.modalTitle = data ? '编辑应用 - ' + data.appName : '添加应用'
@@ -457,7 +458,7 @@
         }
         if (this.current === this.forms[2]) {
           this.modalTitle = data ? '分配权限 - ' + data.appName : '分配权限'
-          this.handleLoadAppGranted(this.formItem.appId)
+          this.handleLoadAppGranted(this.formItem.aid)
         }
         this.formItem.status = this.formItem.status + ''
       },
@@ -467,7 +468,7 @@
       handleReset () {
         //重置验证
         const newData = {
-          appId: '',
+          aid: '',
           apiKey: '',
           secretKey: '',
           appName: '',
@@ -505,7 +506,7 @@
             if (valid) {
               this.saving = true
               const data = Object.assign({}, this.formItem)
-              if (data.appId) {
+              if (data.aid) {
                 updateApp(data).then(res => {
                   if (res.code === 0) {
                     this.$Message.success('保存成功')
@@ -556,7 +557,7 @@
             if (valid) {
               this.saving = true
               grantAuthorityApp({
-                appId: this.formItem.appId,
+                aid: this.formItem.aid,
                 expireTime: this.formItem.expireTime ? this.formItem.expireTime.pattern('yyyy-MM-dd HH:mm:ss') : '',
                 authorityIds: this.formItem.authorities
               }).then(res => {
@@ -588,7 +589,7 @@
         this.$Modal.confirm({
           title: '删除后将无法恢复,确定删除吗？',
           onOk: () => {
-            removeApp({appId: data.appId}).then(res => {
+            removeApp({aid: data.appId}).then(res => {
               this.handleSearch()
               if (res.code === 0) {
                 this.pageInfo.page = 1
@@ -602,7 +603,7 @@
         this.$Modal.confirm({
           title: '重置后将影响应用正常使用,确定重置吗？',
           onOk: () => {
-            restApp({appId: data.appId}).then(res => {
+            restApp({aid: data.appId}).then(res => {
               if (res.code === 0) {
                 this.pageInfo.page = 1
                 this.formItem.secretKey = res.data
@@ -648,13 +649,13 @@
         this.pageInfo.limit = size
         this.handleSearch()
       },
-      handleLoadAppGranted (appId) {
-        if (!appId) {
+      handleLoadAppGranted (aid) {
+        if (!aid) {
           return
         }
         const that = this
         const p1 = getAuthorityApi('')
-        const p2 = getAuthorityApp(appId)
+        const p2 = getAuthorityApp(aid)
         Promise.all([p1, p2]).then(function (values) {
           let res1 = values[0]
           let res2 = values[1]

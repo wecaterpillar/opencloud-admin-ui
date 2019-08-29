@@ -5,8 +5,8 @@ import request from '@/libs/request'
  * @param page
  * @param limit
  */
-export const getApps = ({ page, limit, appId, appName, appNameEn }) => {
-  const params = { page: page, limit: limit, appId: appId, appName: appName, appNameEn: appNameEn }
+export const getApps = ({ page, limit, aid, appName, appNameEn }) => {
+  const params = { page: page, limit: limit, aid: aid, appName: appName, appNameEn: appNameEn }
   return request({
     url: 'base/app',
     params,
@@ -48,7 +48,7 @@ export const addApp = ({ appName, appNameEn, appType, appIcon, appOs, appDesc, s
 
 /**
  * 更新应用信息
- * @param appId
+ * @param aid
  * @param appName
  * @param appNameEn
  * @param appType
@@ -60,9 +60,9 @@ export const addApp = ({ appName, appNameEn, appType, appIcon, appOs, appDesc, s
  * @param userId
  * @param userType
  */
-export const updateApp = ({ appId, appName, appNameEn, appType, appIcon, appOs, appDesc, status, website, developerId }) => {
+export const updateApp = ({ aid, appName, appNameEn, appType, appIcon, appOs, appDesc, status, website, developerId }) => {
   const data = {
-    appId: appId,
+    aid: aid,
     appName: appName,
     appNameEn: appNameEn,
     appType: appType,
@@ -82,7 +82,7 @@ export const updateApp = ({ appId, appName, appNameEn, appType, appIcon, appOs, 
 
 /**
  * 完善应用开发信息
- * @param appId
+ * @param aid
  * @param grantTypes
  * @param redirectUrls
  * @param scopes
@@ -90,9 +90,9 @@ export const updateApp = ({ appId, appName, appNameEn, appType, appIcon, appOs, 
  * @param refreshTokenValidity
  * @param autoApproveScopes
  */
-export const updateAppClientInfo = ({ appId, grantTypes, redirectUrls, scopes, accessTokenValidity, refreshTokenValidity, autoApproveScopes }) => {
+export const updateAppClientInfo = ({ aid, grantTypes, redirectUrls, scopes, accessTokenValidity, refreshTokenValidity, autoApproveScopes }) => {
   const data = {
-    appId: appId,
+    aid: aid,
     grantTypes: grantTypes.join(','),
     redirectUrls: redirectUrls,
     scopes: scopes.join(','),
@@ -109,11 +109,11 @@ export const updateAppClientInfo = ({ appId, grantTypes, redirectUrls, scopes, a
 
 /**
  * 删除应用
- * @param appId
+ * @param aid
  */
-export const removeApp = ({ appId }) => {
+export const removeApp = ({ aid }) => {
   const data = {
-    appId: appId
+    aid: aid
   }
   return request({
     url: 'base/app/remove',
@@ -124,11 +124,11 @@ export const removeApp = ({ appId }) => {
 
 /**
  * 重置秘钥
- * @param appId
+ * @param aid
  */
-export const restApp = ({ appId }) => {
+export const restApp = ({ aid }) => {
   const data = {
-    appId: appId
+    aid: aid
   }
   return request({
     url: 'base/app/reset',
@@ -139,18 +139,18 @@ export const restApp = ({ appId }) => {
 
 /**
  * 获取应用信息
- * @param appId
+ * @param aid
  */
-export const getAppInfo = ({ appId }) => {
+export const getAppInfo = ({ aid }) => {
   return request({
-    url: `base/app/${appId}/info`,
+    url: `base/app/${aid}/info`,
     method: 'get'
   })
 }
 
 /**
  * 获取应用开发信息
- * @param appId
+ * @param aid
  */
 export const getAppClientInfo = ({ clientId }) => {
   return request({
