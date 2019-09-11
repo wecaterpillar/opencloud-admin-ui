@@ -446,6 +446,7 @@
       handleModal (data) {
         if (data) {
           this.formItem = Object.assign({}, this.formItem, data)
+          this.formItem.appId = data.appId
         }
         if (this.current === this.forms[0]) {
           this.modalTitle = data ? '编辑应用 - ' + data.appName : '添加应用'

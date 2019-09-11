@@ -38,14 +38,14 @@ const getNonce = () => {
 export const sign = (config, appId, appSecret, signType) => {
   // 获取到秒级的时间戳,与后端对应
   let data = {
-    appId: appId,
-    timestamp: getDateTimeToString(),
-    signType: signType,
-    nonce: getNonce()
+    APP_ID: appId,
+    TIMESTAMP: getDateTimeToString(),
+    SIGN_TYPE: signType,
+    NONCE: getNonce()
   }
 
-  const _singKey = 'sign'
-  const _secretKey = 'secretKey'
+  const _singKey = 'SIGN'
+  const _secretKey = 'SECRET_KEY'
   let keys = []
   if (config.method === 'get') {
     // url参数签名
@@ -56,7 +56,7 @@ export const sign = (config, appId, appSecret, signType) => {
     data = config.data = Object.assign(config.data ? config.data : {}, data)
     keys = Object.keys(data)
   }
-  //排序
+  // 排序
   const skeys = keys.sort()
   let str = ''
   skeys.filter(k => {
@@ -70,17 +70,16 @@ export const sign = (config, appId, appSecret, signType) => {
   })
   str = str + _secretKey + '=' + appSecret
   let sign = ''
-  if (data.signType === 'MD5') {
-    sign = md5(str).toLowerCase()
+  if (data.SIGN_TYPE === 'MD5') {
+    sign = md5(str).toUpperCase()
   }
-  if (data.signType === 'SHA256') {
-    sign = sha256(str).toLowerCase()
+  if (data.SIGN_TYPE === 'SHA256') {
+    sign = sha256(str).toUpperCase()
   }
-
   if (config.method === 'get') {
-    config.params.sign = sign
+    config.params[_singKey] = sign
   } else {
-    config.data.sign = sign
+    config.data[_singKey] = sign
   }
   return config
 }
